@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import 'tailwindcss/tailwind.css';
+import URL from '../constants/constants';
 
 const customStyles = {
     content: {
@@ -235,5 +236,132 @@ const IndexPage = () => {
         </Modal>
     </div>
 );}
+          <header className="bg-white shadow-md">
+    <div className="container mx-auto flex justify-between items-center py-4">
+        <div className="flex items-center">
+            <img src="fourseasons.jpeg" alt="Logo" className="h-8 mr-2" />
+            <span className="text-2xl font-bold text-gray-800">Four Seasons Hotel</span>
+        </div>
+        <div className="hidden md:flex space-x-4">
+            <a href="#" className="text-gray-600 hover:text-gray-800">Početna</a>
+            <span className="text-gray-600">|</span>
+            <a href="#" className="text-gray-600 hover:text-gray-800">O nama</a>
+            <span className="text-gray-600">|</span>
+            <a href="#" className="text-gray-600 hover:text-gray-800">Kontakt</a>
+        </div>
+        <div className="flex items-center space-x-4">
+            <a href="#" className="text-gray-600 hover:text-gray-800">Prijava</a>
+            <a href="#" className="text-gray-600 hover:text-gray-800">Registracija</a>
+        </div>
+    </div>
+</header>
+            <section className="hero-bg h-screen flex items-center justify-center bg-gray-800 bg-cover bg-no-repeat" style={{backgroundImage: "url('pozadina.png')"}}>
+            <div className="container mx-auto flex flex-col items-center justify-center h-full text-white text-center">
+    <h1 className="text-4xl font-bold mb-4">Rezervišite svoju sobu i više od toga, dotaknite svoje snove!</h1>
+    <form id="searchForm" className="flex flex-wrap space-x-2">
+        <div className="relative flex items-center">
+            <input id="arrivalDateInput" type="date" className="px-4 py-2 focus:outline-none focus:bg-gray-700 rounded-lg" />
+            <label htmlFor="arrivalDateInput" className="text-gray-400 ml-2 absolute">Check in</label>
+        </div>
+        <div className="relative flex items-center">
+            <input id="departureDateInput" type="date" className="px-4 py-2 focus:outline-none focus:bg-gray-700 rounded-lg" />
+            <label htmlFor="departureDateInput" className="text-gray-400 ml-2 absolute">Check out</label>
+        </div>
+        <div className="relative flex items-center">
+            <input id="priceFromInput" type="number" placeholder="Cijena od" className="px-4 py-2 focus:outline-none focus:bg-gray-700 rounded-lg text-black" />
+        </div>
+        <div className="relative flex items-center">
+            <input id="priceToInput" type="number" placeholder="Cijena do" className="px-4 py-2 focus:outline-none focus:bg-gray-700 rounded-lg text-black" />
+        </div>
+        <input id="capacityInput" type="number" placeholder="Kapacitet" className="px-4 py-2 focus:outline-none focus:bg-gray-700 rounded-lg text-black" />
+        <button id="searchButton" className="bg-red-600 px-4 py-2 rounded-r-lg">Pretraži</button>
+    </form>
+</div>
+</section>
+    <section className="container mx-auto py-16">
+    <h2 className="text-3xl font-bold text-center mb-8">Istaknute Sobe u hotelu Four Seasons</h2>
+<div className="space-y-8">
+    <div className="bg-white rounded-lg shadow-lg p-4 flex items-center">
+    <img src="https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill" alt="Naziv slike" className="w-1/4 h-48 object-cover rounded-lg" />
+           <div className="ml-4 w-3/4 grid grid-cols-2 gap-4">
+            <div>
+                <h3 className="text-xl font-semibold">Cairo Room</h3>
+                <p className="text-gray-600">Tip kreveta: King</p>
+                <p className="text-gray-600">Klima: Da</p>
+                <p className="text-gray-600">WiFi: Da</p>
+                <p className="text-gray-600">TV: Da</p>
+                <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg">Recenzije</button>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+                <p className="text-2xl font-bold mb-4">BAM 147</p>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+            <section className="bg-gray-100 py-16">
+
+            <div className="container mx-auto text-center">
+    <h2 className="text-3xl font-bold mb-8">Koje <span className="text-red-600">Usluge</span> Vam <span className="text-red-600">Nudimo!</span></h2>
+    <div className="grid grid-cols-3 gap-8">
+        <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
+            <h3 className="text-xl font-semibold mb-2">Besplatan WIFI</h3>
+            <p className="text-gray-600">Naš Four Seasons Hotel nudi besplatan WiFi za sve goste. Bez obzira jeste li u sobi, restoranu ili na bazenu, možete ostati povezani s vašim najdražima i poslovnim partnerima.</p>
+        </div>
+        <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
+            <h3 className="text-xl font-semibold mb-2">Brza rezervacija</h3>
+            <p className="text-gray-600">Uživajte u jednostavnom procesu rezervacije. Naš tim za pomoć stoji vam na raspolaganju kako biste brzo i lako rezervirali svoj boravak u našem hotelu.</p>
+        </div>
+        <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
+            <h3 className="text-xl font-semibold mb-2">Restorani</h3>
+            <p className="text-gray-600">Naši restorani nude raznovrsne mediteranske delicije pripremljene od svježih namirnica. Uz to, imamo širok izbor vina iz najboljih vinograda.</p>
+        </div>
+        <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
+            <h3 className="text-xl font-semibold mb-2">Bazeni za plivanje</h3>
+            <p className="text-gray-600">Otvoreni i zatvoreni bazeni s grijanom morskom vodom pružaju vam mogućnost opuštanja i rekreacije. Na krovu hotela nalazi se Premium Infinity bazen s panoramskim pogledom na more</p>
+        </div>
+        <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
+            <h3 className="text-xl font-semibold mb-2">Ljepota &amp; zdravlje</h3>
+            <p className="text-gray-600">Naša oaza čistog luksuza prostire se na 2000 m². Ovdje možete uživati u tretmanima za njegu lica i tijela, saunama i drugim spa tretmanima.</p>
+        </div>
+        <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
+            <h3 className="text-xl font-semibold mb-2">Tim za pomoć</h3>
+            <p className="text-gray-600">Naš stručni tim uvijek je tu da vam pomogne i osigura da vaš boravak bude što ugodniji.</p>
+        </div>
+    </div>
+</div>
+</section>
+            <section className="bg-gray-100 py-16">
+            <div className="container mx-auto text-center">
+    <h2 className="text-3xl font-bold mb-4">Uštedite Vrijeme &amp; Uštedite Novac</h2>
+</div>
+            </section>
+            <footer className="bg-gray-800 text-white py-8">
+            <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 justify-center">
+    <div className="flex flex-col items-center">
+        <h3 className="text-xl font-semibold mb-2">O nama</h3>
+        <p className="text-gray-400 text-center">Hotel Four Seasons predstavlja sinonim za luksuz, udobnost i vrhunsku uslugu. Smješten u srcu najprestižnijih destinacija širom sveta, naša misija je da gostima pružimo nezaboravan boravak uz pažljivo osmišljene sadržaje i besprekornu uslugu.</p>
+    </div>
+    <div className="flex flex-col items-center">
+        <h3 className="text-xl font-semibold mb-2">Kompanija</h3>
+        <ul className="text-gray-400 text-center">
+            <li><a href="#" className="hover:text-white">O nama</a></li>
+            <li><a href="#" className="hover:text-white">Kontaktirajte nas</a></li>
+            <li><a href="#" className="hover:text-white">Uslovi</a></li>
+        </ul>
+    </div>
+    <div className="flex flex-col items-center">
+        <h3 className="text-xl font-semibold mb-2">Grad</h3>
+        <ul className="text-gray-400 text-center">
+            <li><a href="#" className="hover:text-white">Cairo</a></li>
+            <li><a href="#" className="hover:text-white">Giza</a></li>
+            <li><a href="#" className="hover:text-white">Luxer</a></li>
+            <li><a href="#" className="hover:text-white">Aswan</a></li>
+        </ul>
+    </div>
+</div>
+ </footer>
+ </div>
+    );
+};
 export default IndexPage;
-//

@@ -2,12 +2,18 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import URL from '../constants/constants';
 import 'tailwindcss/tailwind.css';
+import { useRouter } from 'next/router';
 
 
 const IndexPage = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userType, setUserType] = useState(null);
     const [userId, setUserId] = useState(null); // State to store user ID
+    const [userName, setUserName] = useState('')
+    const [roomData, setRoomData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    
+    const router = useRouter()
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -24,13 +30,14 @@ const IndexPage = () => {
                     const response = await fetch(`${URL}/api/user/list_user/${userId}/`);
                     if (response.ok) {
                         const userData = await response.json();
+                        setUserName(userData[0].name)
                         // Determine user type based on response
                         if (userData[0].is_superuser) {
-                            setUserType('admin');
+                            setUserType('Admin');
                         } else if (userData[0].is_staff) {
-                            setUserType('staff');
+                            setUserType('Staff');
                         } else if (userData[0].is_authenticated) {
-                            setUserType('authenticated_user');
+                            setUserType('User');
                         } else {
                             setUserType('unauthenticated user');
                         }
@@ -54,13 +61,40 @@ const IndexPage = () => {
         } else {
             setIsLoggedIn(false);
         }
-    }, []);
+
+        const fetchRoomData = async () => {
+            const start = (currentPage - 1) * 5 + 1;
+            const end = currentPage * 5;
+            const response = await fetch(`${URL}/api/rooms/create_list/${start}/${end}`);
+            if (response.ok) {
+                setRoomData(await response.json());
+            }
+        }
+
+        fetchRoomData();
+    }, [currentPage]);
 
     const handleLogout = () => {
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
         setIsLoggedIn(false);
         setUserType(null);
+    };
+
+    const handleLogin = () => {
+        router.push('auth/login')
+    }
+
+    const handleRegister = () => {
+        router.push('auth/register')
+    }
+
+    const nextPage = () => {
+        setCurrentPage(prevPage => prevPage + 1);
+    };
+
+    const prevPage = () => {
+        setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
     };
 
     return (
@@ -79,8 +113,17 @@ const IndexPage = () => {
             <a href="#" className="text-gray-600 hover:text-gray-800">Kontakt</a>
         </div>
         <div className="flex items-center space-x-4">
-            <a href="#" className="text-gray-600 hover:text-gray-800">Prijava</a>
-            <a href="#" className="text-gray-600 hover:text-gray-800">Registracija</a>
+        {isLoggedIn ? (
+                        <>
+                            <span className="text-gray-600 hover:text-gray-800 font-bold">{userName} ({userType})</span>
+                            <button onClick={handleLogout} className="text-gray-600 hover:text-gray-800">Logout</button>
+                        </>
+                        ) : (
+                        <>
+                            <button  onClick={handleLogin} className="text-gray-600 hover:text-gray-800">Prijava</button>
+                            <button onClick={handleRegister} className="text-gray-600 hover:text-gray-800">Registracija</button>
+                        </>
+                        )}
         </div>
     </div>
 </header>
@@ -110,22 +153,28 @@ const IndexPage = () => {
     <section className="container mx-auto py-16">
     <h2 className="text-3xl font-bold text-center mb-8">Istaknute Sobe u hotelu Four Seasons</h2>
 <div className="space-y-8">
-    <div className="bg-white rounded-lg shadow-lg p-4 flex items-center">
+    {roomData.map(room => (
+    <div key={room.roomNumber} className="bg-white rounded-lg shadow-lg p-4 flex items-center">
     <img src="https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill" alt="Naziv slike" className="w-1/4 h-48 object-cover rounded-lg" />
            <div className="ml-4 w-3/4 grid grid-cols-2 gap-4">
             <div>
-                <h3 className="text-xl font-semibold">Cairo Room</h3>
-                <p className="text-gray-600">Tip kreveta: King</p>
-                <p className="text-gray-600">Klima: Da</p>
-                <p className="text-gray-600">WiFi: Da</p>
-                <p className="text-gray-600">TV: Da</p>
+                <h3 className="text-xl font-semibold">Room number: {room.roomNumber}</h3>
+                <p className="text-gray-600">Tip kreveta: {room.bedType}</p>
+                <p className="text-gray-600">Klima: {room.airCondition ? 'Da' : 'Ne'}</p>
+                <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
+                <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
                 <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg">Recenzije</button>
             </div>
             <div className="flex flex-col items-center justify-center">
-                <p className="text-2xl font-bold mb-4">BAM 147</p>
+                <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
             </div>
         </div>
     </div>
+    ))}
+</div>
+<div className="flex justify-center mt-8">
+                    <button onClick={prevPage} disabled={currentPage === 1} className="mr-2 px-3 py-1 bg-gray-300 text-black rounded-lg">Previous</button>
+                    <button onClick={nextPage} className="px-3 py-1 bg-gray-300 text-black rounded-lg">Next</button>
 </div>
 </section>
             <section className="bg-gray-100 py-16">

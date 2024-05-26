@@ -199,11 +199,6 @@ const IndexPage = () => {
                 <h2 className="text-3xl font-bold mb-4">Uštedite Vrijeme &amp; Uštedite Novac</h2>
             </div>
         </section>
-        <section className="bg-gray-100 py-16">
-            <div className="container mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-4">Uštedite Vrijeme &amp; Uštedite Novac</h2>
-            </div>
-        </section>
         <footer className="bg-gray-800 text-white py-8">
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 justify-center">
                 <div className="flex flex-col items-center">

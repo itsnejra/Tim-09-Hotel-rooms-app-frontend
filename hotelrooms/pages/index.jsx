@@ -3,6 +3,9 @@ import Cookies from 'js-cookie';
 import URL from '../constants/constants';
 import 'tailwindcss/tailwind.css';
 import { useRouter } from 'next/router';
+import Modal from 'react-modal';
+import ImageGallery from 'react-image-gallery';
+import 'react-image-gallery/styles/css/image-gallery.css';
 
 
 const IndexPage = () => {
@@ -96,6 +99,20 @@ const IndexPage = () => {
     const prevPage = () => {
         setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
     };
+    const roomImages = [
+        {
+            original: 'https://cf.bstatic.com/xdata/images/hotel/max1280x900/431482656.jpg?k=582cbf330fa99dec29e145174f05b01c7d7c2dd6168f76da91a0c42b3ecee43d&o=&hp=1',
+            thumbnail: 'https://cf.bstatic.com/xdata/images/hotel/max1280x900/431482656.jpg?k=582cbf330fa99dec29e145174f05b01c7d7c2dd6168f76da91a0c42b3ecee43d&o=&hp=1'
+        },
+        {
+            original: 'https://cf.bstatic.com/xdata/images/hotel/max1280x900/431488949.jpg?k=802299f59a684874b521112b8e7fd933d815c45cb63ae6ce029dff8950562d7d&o=&hp=1',
+            thumbnail: 'https://cf.bstatic.com/xdata/images/hotel/max1280x900/431488949.jpg?k=802299f59a684874b521112b8e7fd933d815c45cb63ae6ce029dff8950562d7d&o=&hp=1'
+        },
+        {
+            original: 'https://cf.bstatic.com/xdata/images/hotel/max1280x900/431489442.jpg?k=4ef016571552e6dd42b58cc0cd860ddb09561aca573bc5eead384fa904722ddb&o=&hp=1',
+            thumbnail: 'https://cf.bstatic.com/xdata/images/hotel/max1280x900/431489442.jpg?k=4ef016571552e6dd42b58cc0cd860ddb09561aca573bc5eead384fa904722ddb&o=&hp=1'
+        }
+    ];
 
     return (
         <div>
@@ -155,7 +172,7 @@ const IndexPage = () => {
 <div className="space-y-8">
     {roomData.map(room => (
     <div key={room.roomNumber} className="bg-white rounded-lg shadow-lg p-4 flex items-center">
-    <img src="https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill" alt="Naziv slike" className="w-1/4 h-48 object-cover rounded-lg" />
+   <img src="https://cf.bstatic.com/xdata/images/hotel/max1280x900/431481273.jpg?k=dc27ec71039b7ab2acbbcd5dc1c353162d7cc08fd3d5789d03a41a6d7f4531d8&o=&hp=1" alt="Naziv slike" className="w-1/4 h-48 object-cover rounded-lg cursor-pointer" onClick={() => openModal(roomImages)} />
            <div className="ml-4 w-3/4 grid grid-cols-2 gap-4">
             <div>
                 <h3 className="text-xl font-semibold">Room number: {room.roomNumber}</h3>

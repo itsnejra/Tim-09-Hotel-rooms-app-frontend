@@ -210,7 +210,6 @@ const IndexPage = () => {
 {roomData.map(room => {
     const filteredImages = currentImages.filter(image => image.room_id === room.roomNumber);
 
-    // Ensure there are images before rendering the <img> tag
     return (
         <div key={room.roomNumber} className="bg-white rounded-lg shadow-lg p-4 flex items-center">
             {filteredImages.length > 0 ? (
@@ -253,15 +252,42 @@ const IndexPage = () => {
         </div>
     );
 })}
-
 </div>
+<div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+    <hr class="my-4"/>
+    <div class="flex justify-between mb-4">
+      <div>
+        <div class="text-lg font-bold">Dobra lokacija i udobno za kratke boravke</div>
+        <div class="flex items-center space-x-2">
+          <span class="text-yellow-500">★★★★☆</span>
+          <span class="text-gray-500 text-sm">04/11/2023</span>
+        </div>
+        <div class="text-gray-700 mt-2">
+          <p>Hotel je bio dobar, a sobe uredne. Lokacija je bila dobra. Lift je bio u funkciji.</p>
+        </div>
+      </div>
+      <div class="flex-shrink-0 w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+        <span class="text-gray-400">Mjesto za sliku</span>
+      </div>
+    </div>
+    <hr class="my-4"/>
+    <div class="mb-4">
+      <div class="text-lg font-bold">Izvrsna usluga i ljubazno osoblje</div>
+      <div class="flex items-center space-x-2">
+        <span class="text-yellow-500">★★★★★</span>
+        <span class="text-gray-500 text-sm">03/21/2023</span>
+      </div>
+      <div class="text-gray-700 mt-2">
+        <p>Osoblje je bilo nevjerovatno ljubazno i uslužno. Soba je bila čista i dobro održavana. Imao sam divan boravak i sigurno ću se vratiti.</p>
+      </div>
+    </div>
+  </div>
 <div className="flex justify-center mt-8">
                     <button onClick={prevPage} disabled={currentPage === 1} className="mr-2 px-3 py-1 bg-gray-300 text-black rounded-lg">Previous</button>
                     <button onClick={nextPage} className="px-3 py-1 bg-gray-300 text-black rounded-lg">Next</button>
 </div>
 </section>
             <section className="bg-gray-100 py-16">
-
             <div className="container mx-auto text-center">
     <h2 className="text-3xl font-bold mb-8">Koje <span className="text-red-600">Usluge</span> Vam <span className="text-red-600">Nudimo!</span></h2>
     <div className="grid grid-cols-3 gap-8">

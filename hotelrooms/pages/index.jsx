@@ -3,7 +3,20 @@ import Cookies from 'js-cookie';
 import URL from '../constants/constants';
 import 'tailwindcss/tailwind.css';
 import { useRouter } from 'next/router';
+import Modal from 'react-modal';
+import ImageGallery from 'react-image-gallery';
+import 'react-image-gallery/styles/css/image-gallery.css';
 
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+    },
+};
 
 const IndexPage = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -12,6 +25,18 @@ const IndexPage = () => {
     const [userName, setUserName] = useState('')
     const [roomData, setRoomData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [currentImages, setCurrentImages] = useState([]);
+    const [tempImages, setTempImages] = useState([]);
+
+    const openModal = (images) => {
+        setTempImages(images);
+        setIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsOpen(false);
+    };
     
     const router = useRouter()
 
@@ -97,6 +122,35 @@ const IndexPage = () => {
         setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
     };
 
+
+    useEffect( () => {
+        const fetchRoomImages = async () => {
+        try {
+            const response = await fetch(`${URL}/api/rooms/list_room_images/`);
+            if (response.ok) {
+                const imagesUrls = await response.json();
+                const imageUrlsFormatted = imagesUrls.map((imageUrl) => {
+                    const parts = imageUrl.image.split('/api/');
+                    const newPath = parts[1].replace('rooms/list_room_images/', '');
+                    const newUrl = parts[0] + '/' + newPath;
+                    return {
+                        original: newUrl,
+                        thumbnail: newUrl,
+                        room_id: imageUrl.room
+                    }
+                });
+                setCurrentImages(imageUrlsFormatted);
+
+            } else {
+                console.error('Failed to fetch room images');
+            }
+        } catch (error) {
+            console.error('Error fetching room images:', error);
+        }
+    }
+    fetchRoomImages()
+    }, [roomData])
+
     return (
         <div>
           <header className="bg-white shadow-md">
@@ -153,24 +207,53 @@ const IndexPage = () => {
     <section className="container mx-auto py-16">
     <h2 className="text-3xl font-bold text-center mb-8">Istaknute Sobe u hotelu Four Seasons</h2>
 <div className="space-y-8">
-    {roomData.map(room => (
-    <div key={room.roomNumber} className="bg-white rounded-lg shadow-lg p-4 flex items-center">
-    <img src="https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill" alt="Naziv slike" className="w-1/4 h-48 object-cover rounded-lg" />
-           <div className="ml-4 w-3/4 grid grid-cols-2 gap-4">
-            <div>
-                <h3 className="text-xl font-semibold">Room number: {room.roomNumber}</h3>
-                <p className="text-gray-600">Tip kreveta: {room.bedType}</p>
-                <p className="text-gray-600">Klima: {room.airCondition ? 'Da' : 'Ne'}</p>
-                <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
-                <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
-                <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg">Recenzije</button>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-                <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
-            </div>
+{roomData.map(room => {
+    const filteredImages = currentImages.filter(image => image.room_id === room.roomNumber);
+
+    // Ensure there are images before rendering the <img> tag
+    return (
+        <div key={room.roomNumber} className="bg-white rounded-lg shadow-lg p-4 flex items-center">
+            {filteredImages.length > 0 ? (
+                <>
+                    <img
+                        src={filteredImages[0].original}
+                        alt="Naziv slike"
+                        className="w-1/4 h-48 object-cover rounded-lg"
+                        onClick={() => openModal(filteredImages)}
+                    />
+                    <div className="ml-4 w-3/4 grid grid-cols-2 gap-4">
+                        <div>
+                            <h3 className="text-xl font-semibold">Room number: {room.roomNumber}</h3>
+                            <p className="text-gray-600">Tip kreveta: {room.bedType}</p>
+                            <p className="text-gray-600">Klima: {room.airCondition ? 'Da' : 'Ne'}</p>
+                            <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
+                            <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
+                            <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg">Recenzije</button>
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <div className="ml-4 w-3/4 grid grid-cols-2 gap-4">
+                    <div>
+                        <h3 className="text-xl font-semibold">Room number: {room.roomNumber}</h3>
+                        <p className="text-gray-600">Tip kreveta: {room.bedType}</p>
+                        <p className="text-gray-600">Klima: {room.airCondition ? 'Da' : 'Ne'}</p>
+                        <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
+                        <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
+                        <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg">Recenzije</button>
+                    </div>
+                    <div className="flex flex-col items-center justify-center">
+                        <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
+                    </div>
+                </div>
+            )}
         </div>
-    </div>
-    ))}
+    );
+})}
+
 </div>
 <div className="flex justify-center mt-8">
                     <button onClick={prevPage} disabled={currentPage === 1} className="mr-2 px-3 py-1 bg-gray-300 text-black rounded-lg">Previous</button>
@@ -239,6 +322,16 @@ const IndexPage = () => {
     </div>
 </div>
  </footer>
+        <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            style={customStyles}
+            ariaHideApp={false}
+            contentLabel="Room Image Gallery"
+        >
+            <button onClick={closeModal} className="absolute top-2 right-2 text-white bg-red-600 rounded-full p-1">X</button>
+            <ImageGallery items={tempImages} />
+        </Modal>
  </div>
     );
 };

@@ -12,6 +12,7 @@ import { fetchRoomData } from '@/src/utils/fetch/fetchRoomData';
 import { fetchRoomImages } from '@/src/utils/fetch/fetchRoomImages';
 import { fetchUserData } from '@/src/utils/fetch/fetchUserData';
 import Search from '@/src/components/homepage/search';
+import { fetchFilteredRoomData } from '@/src/utils/fetch/fetchFilteredRoomData';
 
 const customStyles = {
     content: {
@@ -35,6 +36,8 @@ const IndexPage = () => {
     const [currentImages, setCurrentImages] = useState([]);
     const [tempImages, setTempImages] = useState([]);
     const [roomReviews, setRoomReviews] = useState([]);
+    const [filters, setFilters] = useState({ startPrice: 0, endPrice: 0, startCapacity: 0, endCapacity: 0 });
+    const [isSearchApplied, setIsSearchApplied] = useState(false);
 
     const openModal = (images) => {
         setTempImages(images);
@@ -65,7 +68,12 @@ const IndexPage = () => {
 
         const getRoomData = async () => {
             try {
-                const data = await fetchRoomData(currentPage);
+                let data
+                if (isSearchApplied) {
+                    data = await fetchFilteredRoomData(filters.startPrice, filters.endPrice, filters.startCapacity, filters.endCapacity, currentPage);
+                } else {
+                    data = await fetchRoomData(currentPage);
+                }
                 setRoomData(data);
 
                 const reviewsObj = {};
@@ -79,7 +87,7 @@ const IndexPage = () => {
         };
 
         getRoomData();
-    }, [currentPage]);
+    }, [currentPage, filters, isSearchApplied]);
 
     const handleLogout = () => {
         Cookies.remove('accessToken');
@@ -130,7 +138,17 @@ const IndexPage = () => {
         });
     };
 
+    const handleSearch = (startPrice, endPrice, startCapacity, endCapacity) => {
+        setFilters({ startPrice, endPrice, startCapacity, endCapacity });
+        setCurrentPage(1);
+        setIsSearchApplied(true);
+    };
 
+    const handleClearSearch = () => {
+        setFilters({ startPrice: 0, endPrice: 0, startCapacity: 0, endCapacity: 0 });
+        setCurrentPage(1); // Reset to the first page
+        setIsSearchApplied(false); // Mark that search is not applied
+    };
 
     return (
         <div>
@@ -142,7 +160,10 @@ const IndexPage = () => {
                 handleLogin={handleLogin}
                 handleRegister={handleRegister}
             />
-            <Search/>
+            <Search onSearch={handleSearch}
+                    onClearSearch={handleClearSearch}
+                    isSearchApplied={isSearchApplied}
+            />
 
     <section className="container mx-auto py-16">
     <h2 className="text-3xl font-bold text-center mb-8">Istaknute Sobe u hotelu Four Seasons</h2>

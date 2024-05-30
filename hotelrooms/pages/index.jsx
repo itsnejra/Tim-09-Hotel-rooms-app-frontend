@@ -11,6 +11,7 @@ import Footer from '@/src/components/layout/footer';
 import { fetchRoomData } from '@/src/utils/fetch/fetchRoomData';
 import { fetchRoomImages } from '@/src/utils/fetch/fetchRoomImages';
 import { fetchUserData } from '@/src/utils/fetch/fetchUserData';
+import Search from '@/src/components/homepage/search';
 
 const customStyles = {
     content: {
@@ -141,29 +142,8 @@ const IndexPage = () => {
                 handleLogin={handleLogin}
                 handleRegister={handleRegister}
             />
-            <section className="hero-bg h-screen flex items-center justify-center bg-gray-800 bg-cover bg-no-repeat" style={{backgroundImage: "url('pozadina.png')"}}>
-            <div className="container mx-auto flex flex-col items-center justify-center h-full text-white text-center">
-    <h1 className="text-4xl font-bold mb-4">Rezervišite svoju sobu i više od toga, dotaknite svoje snove!</h1>
-    <form id="searchForm" className="flex flex-wrap space-x-2">
-        <div className="relative flex items-center">
-            <input id="arrivalDateInput" type="date" className="px-4 py-2 focus:outline-none focus:bg-gray-700 rounded-lg" />
-            <label htmlFor="arrivalDateInput" className="text-gray-400 ml-2 absolute">Check in</label>
-        </div>
-        <div className="relative flex items-center">
-            <input id="departureDateInput" type="date" className="px-4 py-2 focus:outline-none focus:bg-gray-700 rounded-lg" />
-            <label htmlFor="departureDateInput" className="text-gray-400 ml-2 absolute">Check out</label>
-        </div>
-        <div className="relative flex items-center">
-            <input id="priceFromInput" type="number" placeholder="Cijena od" className="px-4 py-2 focus:outline-none focus:bg-gray-700 rounded-lg text-black" />
-        </div>
-        <div className="relative flex items-center">
-            <input id="priceToInput" type="number" placeholder="Cijena do" className="px-4 py-2 focus:outline-none focus:bg-gray-700 rounded-lg text-black" />
-        </div>
-        <input id="capacityInput" type="number" placeholder="Kapacitet" className="px-4 py-2 focus:outline-none focus:bg-gray-700 rounded-lg text-black" />
-        <button id="searchButton" className="bg-red-600 px-4 py-2 rounded-r-lg">Pretraži</button>
-    </form>
-</div>
-</section>
+            <Search/>
+
     <section className="container mx-auto py-16">
     <h2 className="text-3xl font-bold text-center mb-8">Istaknute Sobe u hotelu Four Seasons</h2>
 <div className="space-y-8">

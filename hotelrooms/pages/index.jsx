@@ -6,6 +6,11 @@ import { useRouter } from 'next/router';
 import Modal from 'react-modal';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
+import Header from '@/src/components/layout/header';
+import Footer from '@/src/components/layout/footer';
+import { fetchRoomData } from '@/src/utils/fetch/fetchRoomData';
+import { fetchRoomImages } from '@/src/utils/fetch/fetchRoomImages';
+import { fetchUserData } from '@/src/utils/fetch/fetchUserData';
 
 const customStyles = {
     content: {
@@ -28,6 +33,7 @@ const IndexPage = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [currentImages, setCurrentImages] = useState([]);
     const [tempImages, setTempImages] = useState([]);
+    const [roomReviews, setRoomReviews] = useState([]);
 
     const openModal = (images) => {
         setTempImages(images);
@@ -41,62 +47,37 @@ const IndexPage = () => {
     const router = useRouter()
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const accessToken = Cookies.get('accessToken');
-
-                // Manually decode the JWT token
-                const tokenParts = accessToken.split('.');
-                if (tokenParts.length === 3) {
-                    const payload = JSON.parse(atob(tokenParts[1]));
-                    const userId = payload.user_id;
-                    setUserId(userId); // Set user ID state
-
-                    const response = await fetch(`${URL}/api/user/list_user/${userId}/`);
-                    if (response.ok) {
-                        const userData = await response.json();
-                        setUserName(userData[0].name)
-                        // Determine user type based on response
-                        if (userData[0].is_superuser) {
-                            setUserType('Admin');
-                        } else if (userData[0].is_staff) {
-                            setUserType('Staff');
-                        } else if (userData[0].is_authenticated) {
-                            setUserType('User');
-                        } else {
-                            setUserType('unauthenticated user');
-                        }
-                        setIsLoggedIn(true);
-                    } else {
-                        setIsLoggedIn(false);
-                    }
-                } else {
-                    console.error('Invalid JWT token format');
-                    setIsLoggedIn(false);
-                }
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                setIsLoggedIn(false);
-            }
+        const getUserData = async () => {
+            const userData = await fetchUserData();
+            setUserId(userData.userId);
+            setUserName(userData.userName);
+            setUserType(userData.userType);
+            setIsLoggedIn(userData.isLoggedIn);
         };
 
         const accessToken = Cookies.get('accessToken');
         if (accessToken) {
-            fetchUserData();
+            getUserData();
         } else {
             setIsLoggedIn(false);
         }
 
-        const fetchRoomData = async () => {
-            const start = (currentPage - 1) * 5 + 1;
-            const end = currentPage * 5;
-            const response = await fetch(`${URL}/api/rooms/create_list/${start}/${end}`);
-            if (response.ok) {
-                setRoomData(await response.json());
-            }
-        }
+        const getRoomData = async () => {
+            try {
+                const data = await fetchRoomData(currentPage);
+                setRoomData(data);
 
-        fetchRoomData();
+                const reviewsObj = {};
+                data.forEach(room => {
+                    reviewsObj[room.roomNumber] = { state: false };
+                });
+                setRoomReviews(reviewsObj);
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
+        getRoomData();
     }, [currentPage]);
 
     const handleLogout = () => {
@@ -124,63 +105,42 @@ const IndexPage = () => {
 
 
     useEffect( () => {
-        const fetchRoomImages = async () => {
-        try {
-            const response = await fetch(`${URL}/api/rooms/list_room_images/`);
-            if (response.ok) {
-                const imagesUrls = await response.json();
-                const imageUrlsFormatted = imagesUrls.map((imageUrl) => {
-                    const parts = imageUrl.image.split('/api/');
-                    const newPath = parts[1].replace('rooms/list_room_images/', '');
-                    const newUrl = parts[0] + '/' + newPath;
-                    return {
-                        original: newUrl,
-                        thumbnail: newUrl,
-                        room_id: imageUrl.room
-                    }
-                });
-                setCurrentImages(imageUrlsFormatted);
-
-            } else {
-                console.error('Failed to fetch room images');
+        const getRoomImages = async () => {
+            try {
+                const images = await fetchRoomImages();
+                setCurrentImages(images);
+            } catch (error) {
+                console.error(error.message);
             }
-        } catch (error) {
-            console.error('Error fetching room images:', error);
-        }
-    }
-    fetchRoomImages()
+        };
+
+        getRoomImages();
     }, [roomData])
+
+    const toggleReviews = (roomNumber) => {
+        setRoomReviews(prevState => {
+            return {
+                ...prevState,
+                [roomNumber]: {
+                    ...prevState[roomNumber],
+                    state: !prevState[roomNumber].state
+                }
+            };
+        });
+    };
+
+
 
     return (
         <div>
-          <header className="bg-white shadow-md">
-    <div className="container mx-auto flex justify-between items-center py-4">
-        <div className="flex items-center">
-            <img src="fourseasons.jpeg" alt="Logo" className="h-8 mr-2" />
-            <span className="text-2xl font-bold text-gray-800">Four Seasons Hotel</span>
-        </div>
-        <div className="hidden md:flex space-x-4">
-            <a href="#" className="text-gray-600 hover:text-gray-800">Početna</a>
-            <span className="text-gray-600">|</span>
-            <a href="#" className="text-gray-600 hover:text-gray-800">O nama</a>
-            <span className="text-gray-600">|</span>
-            <a href="#" className="text-gray-600 hover:text-gray-800">Kontakt</a>
-        </div>
-        <div className="flex items-center space-x-4">
-        {isLoggedIn ? (
-                        <>
-                            <span className="text-gray-600 hover:text-gray-800 font-bold">{userName} ({userType})</span>
-                            <button onClick={handleLogout} className="text-gray-600 hover:text-gray-800">Logout</button>
-                        </>
-                        ) : (
-                        <>
-                            <button  onClick={handleLogin} className="text-gray-600 hover:text-gray-800">Prijava</button>
-                            <button onClick={handleRegister} className="text-gray-600 hover:text-gray-800">Registracija</button>
-                        </>
-                        )}
-        </div>
-    </div>
-</header>
+            <Header
+                isLoggedIn={isLoggedIn}
+                userName={userName}
+                userType={userType}
+                handleLogout={handleLogout}
+                handleLogin={handleLogin}
+                handleRegister={handleRegister}
+            />
             <section className="hero-bg h-screen flex items-center justify-center bg-gray-800 bg-cover bg-no-repeat" style={{backgroundImage: "url('pozadina.png')"}}>
             <div className="container mx-auto flex flex-col items-center justify-center h-full text-white text-center">
     <h1 className="text-4xl font-bold mb-4">Rezervišite svoju sobu i više od toga, dotaknite svoje snove!</h1>
@@ -211,28 +171,50 @@ const IndexPage = () => {
     const filteredImages = currentImages.filter(image => image.room_id === room.roomNumber);
 
     return (
-        <div key={room.roomNumber} className="bg-white rounded-lg shadow-lg p-4 flex items-center">
+        <div key={room.roomNumber} className="bg-white rounded-lg shadow-lg p-4 grid grid-rows-1">
             {filteredImages.length > 0 ? (
                 <>
+                    <div className="flex items-center">
                     <img
                         src={filteredImages[0].original}
                         alt="Naziv slike"
                         className="w-1/4 h-48 object-cover rounded-lg"
                         onClick={() => openModal(filteredImages)}
                     />
-                    <div className="ml-4 w-3/4 grid grid-cols-2 gap-4">
+                    <div className="ml-4 w-3/4 grid grid-cols-2 gap-4 flex flex-wrap">
                         <div>
                             <h3 className="text-xl font-semibold">Room number: {room.roomNumber}</h3>
                             <p className="text-gray-600">Tip kreveta: {room.bedType}</p>
                             <p className="text-gray-600">Klima: {room.airCondition ? 'Da' : 'Ne'}</p>
                             <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
                             <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
-                            <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg">Recenzije</button>
+                            <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg" onClick={() => toggleReviews(room.roomNumber)}>Recenzije</button>
                         </div>
                         <div className="flex flex-col items-center justify-center">
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
                         </div>
                     </div>
+                    {console.log('aaa', roomReviews[room.roomNumber].state)}
+                    </div>
+                    {roomReviews[room.roomNumber].state  && (
+                    <>
+                    <div>
+                        <div className="mt-4">
+                            <div className="text-lg font-bold">Dobra lokacija i udobno za kratke boravke</div>
+                            <div className="flex items-center space-x-2">
+                                <span className="text-yellow-500">★★★★☆</span>
+                                <span className="text-gray-500 text-sm">04/11/2023</span>
+                            </div>
+                            <div className="text-gray-700 mt-2">
+                                <p>Hotel je bio dobar, a sobe uredne. Lokacija je bila dobra. Lift je bio u funkciji.</p>
+                            </div>
+                        </div>
+                        <div className="flex-shrink-0 w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                            <span className="text-gray-400">Mjesto za sliku</span>
+                        </div>
+                    </div>
+                    </>
+            )}
                 </>
             ) : (
                 <div className="ml-4 w-3/4 grid grid-cols-2 gap-4">
@@ -253,35 +235,6 @@ const IndexPage = () => {
     );
 })}
 </div>
-<div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-    <hr class="my-4"/>
-    <div class="flex justify-between mb-4">
-      <div>
-        <div class="text-lg font-bold">Dobra lokacija i udobno za kratke boravke</div>
-        <div class="flex items-center space-x-2">
-          <span class="text-yellow-500">★★★★☆</span>
-          <span class="text-gray-500 text-sm">04/11/2023</span>
-        </div>
-        <div class="text-gray-700 mt-2">
-          <p>Hotel je bio dobar, a sobe uredne. Lokacija je bila dobra. Lift je bio u funkciji.</p>
-        </div>
-      </div>
-      <div class="flex-shrink-0 w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center">
-        <span class="text-gray-400">Mjesto za sliku</span>
-      </div>
-    </div>
-    <hr class="my-4"/>
-    <div class="mb-4">
-      <div class="text-lg font-bold">Izvrsna usluga i ljubazno osoblje</div>
-      <div class="flex items-center space-x-2">
-        <span class="text-yellow-500">★★★★★</span>
-        <span class="text-gray-500 text-sm">03/21/2023</span>
-      </div>
-      <div class="text-gray-700 mt-2">
-        <p>Osoblje je bilo nevjerovatno ljubazno i uslužno. Soba je bila čista i dobro održavana. Imao sam divan boravak i sigurno ću se vratiti.</p>
-      </div>
-    </div>
-  </div>
 <div className="flex justify-center mt-8">
                     <button onClick={prevPage} disabled={currentPage === 1} className="mr-2 px-3 py-1 bg-gray-300 text-black rounded-lg">Previous</button>
                     <button onClick={nextPage} className="px-3 py-1 bg-gray-300 text-black rounded-lg">Next</button>
@@ -323,31 +276,7 @@ const IndexPage = () => {
     <h2 className="text-3xl font-bold mb-4">Uštedite Vrijeme &amp; Uštedite Novac</h2>
 </div>
             </section>
-            <footer className="bg-gray-800 text-white py-8">
-            <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 justify-center">
-    <div className="flex flex-col items-center">
-        <h3 className="text-xl font-semibold mb-2">O nama</h3>
-        <p className="text-gray-400 text-center">Hotel Four Seasons predstavlja sinonim za luksuz, udobnost i vrhunsku uslugu. Smješten u srcu najprestižnijih destinacija širom sveta, naša misija je da gostima pružimo nezaboravan boravak uz pažljivo osmišljene sadržaje i besprekornu uslugu.</p>
-    </div>
-    <div className="flex flex-col items-center">
-        <h3 className="text-xl font-semibold mb-2">Kompanija</h3>
-        <ul className="text-gray-400 text-center">
-            <li><a href="#" className="hover:text-white">O nama</a></li>
-            <li><a href="#" className="hover:text-white">Kontaktirajte nas</a></li>
-            <li><a href="#" className="hover:text-white">Uslovi</a></li>
-        </ul>
-    </div>
-    <div className="flex flex-col items-center">
-        <h3 className="text-xl font-semibold mb-2">Grad</h3>
-        <ul className="text-gray-400 text-center">
-            <li><a href="#" className="hover:text-white">Cairo</a></li>
-            <li><a href="#" className="hover:text-white">Giza</a></li>
-            <li><a href="#" className="hover:text-white">Luxer</a></li>
-            <li><a href="#" className="hover:text-white">Aswan</a></li>
-        </ul>
-    </div>
-</div>
- </footer>
+            <Footer/>
         <Modal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}

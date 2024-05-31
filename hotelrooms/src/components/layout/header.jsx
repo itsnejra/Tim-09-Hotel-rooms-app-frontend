@@ -16,7 +16,7 @@ const Header = ({ isLoggedIn, userName, userType, handleLogout, handleLogin,hand
                     <span className="text-gray-600">|</span>
                     <a href="#" className="text-gray-600 hover:text-gray-800">O nama</a>
                     <span className="text-gray-600">|</span>
-                    <a href="#" className="text-gray-600 hover:text-gray-800">Kontakt</a>
+                    <a href="/contact" className="text-gray-600 hover:text-gray-800">Kontakt</a>
                 </div>
                 <div className="flex items-center space-x-4">
                     {isLoggedIn ? (

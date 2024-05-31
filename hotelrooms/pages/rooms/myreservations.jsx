@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import URL from "../constants/constants";
+import URL from "../../constants/constants";
 import "tailwindcss/tailwind.css";
 import { useRouter } from "next/router";
+import Header from "@/src/components/layout/header";
+import Footer from "@/src/components/layout/footer";
 
 const ViewReservations = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -104,60 +106,15 @@ const ViewReservations = () => {
   };
 
   return (
-    <div>
-      <header className="bg-white shadow-md">
-        <div className="container mx-auto flex justify-between items-center py-4">
-          <div className="flex items-center">
-            <img src="fourseasons.jpeg" alt="Logo" className="h-8 mr-2" />
-            <span className="text-2xl font-bold text-gray-800">
-              Four Seasons Hotel
-            </span>
-          </div>
-          <div className="hidden md:flex space-x-4">
-            <a href="#" className="text-gray-600 hover:text-gray-800">
-              Početna
-            </a>
-            <span className="text-gray-600">|</span>
-            <a href="#" className="text-gray-600 hover:text-gray-800">
-              O nama
-            </a>
-            <span className="text-gray-600">|</span>
-            <a href="#" className="text-gray-600 hover:text-gray-800">
-              Kontakt
-            </a>
-          </div>
-          <div className="flex items-center space-x-4">
-            {isLoggedIn ? (
-              <>
-                <span className="text-gray-600 hover:text-gray-800 font-bold">
-                  {userName} ({userType})
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={handleLogin}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  Prijava
-                </button>
-                <button
-                  onClick={handleRegister}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  Registracija
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
+    <div className="flex flex-col min-h-screen">
+        <Header
+          isLoggedIn={isLoggedIn}
+          userName={userName}
+          userType={userType}
+          handleLogout={handleLogout}
+          handleLogin={handleLogin}
+          handleRegister={handleRegister}
+          />
       <main className="container mx-auto my-8 max-w-4xl">
         <h1 className="text-3xl font-bold text-left mb-6">Moje Rezervacije</h1>
         <div className="space-y-4">
@@ -237,64 +194,7 @@ const ViewReservations = () => {
           </div>
         </div>
       </main>
-      <footer className="bg-gray-800 text-white py-8">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 justify-center">
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl font-semibold mb-2">O nama</h3>
-            <p className="text-gray-400 text-center">
-              Hotel Four Seasons predstavlja sinonim za luksuz, udobnost i
-              vrhunsku uslugu. Smješten u srcu najprestižnijih destinacija širom
-              sveta, naša misija je da gostima pružimo nezaboravan boravak uz
-              pažljivo osmišljene sadržaje i besprekornu uslugu.
-            </p>
-          </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl font-semibold mb-2">Kompanija</h3>
-            <ul className="text-gray-400 text-center">
-              <li>
-                <a href="#" className="hover:text-white">
-                  O nama
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Kontaktirajte nas
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Uslovi
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl font-semibold mb-2">Grad</h3>
-            <ul className="text-gray-400 text-center">
-              <li>
-                <a href="#" className="hover:text-white">
-                  Cairo
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Giza
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Luxer
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Aswan
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+     <Footer/>
     </div>
   );
 };

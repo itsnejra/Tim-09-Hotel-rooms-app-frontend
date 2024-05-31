@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import URL from "../constants/constants";
+import URL from "../../constants/constants";
 import "tailwindcss/tailwind.css";
 import { useRouter } from "next/router";
+import Header from "@/src/components/layout/header";
+import Footer from "@/src/components/layout/footer";
 
 const AddRoom = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -72,60 +74,15 @@ const AddRoom = () => {
   };
 
   return (
-    <div>
-      <header className="bg-white shadow-md">
-        <div className="container mx-auto flex justify-between items-center py-4">
-          <div className="flex items-center">
-            <img src="fourseasons.jpeg" alt="Logo" className="h-8 mr-2" />
-            <span className="text-2xl font-bold text-gray-800">
-              Four Seasons Hotel
-            </span>
-          </div>
-          <div className="hidden md:flex space-x-4">
-            <a href="#" className="text-gray-600 hover:text-gray-800">
-              Početna
-            </a>
-            <span className="text-gray-600">|</span>
-            <a href="#" className="text-gray-600 hover:text-gray-800">
-              O nama
-            </a>
-            <span className="text-gray-600">|</span>
-            <a href="#" className="text-gray-600 hover:text-gray-800">
-              Kontakt
-            </a>
-          </div>
-          <div className="flex items-center space-x-4">
-            {isLoggedIn ? (
-              <>
-                <span className="text-gray-600 hover:text-gray-800 font-bold">
-                  {userName} ({userType})
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={handleLogin}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  Prijava
-                </button>
-                <button
-                  onClick={handleRegister}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  Registracija
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
+    <div className="flex flex-col min-h-screen">
+      <Header
+          isLoggedIn={isLoggedIn}
+          userName={userName}
+          userType={userType}
+          handleLogout={handleLogout}
+          handleLogin={handleLogin}
+          handleRegister={handleRegister}
+      />
       <div class="container mx-auto mt-10">
         <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
           <h2 class="text-2xl font-semibold mb-6">Dodaj Sobu</h2>
@@ -163,7 +120,7 @@ const AddRoom = () => {
                   </div>
                 </div>
                 <div class="mb-4">
-                  <div class="flex items-center justify-between">
+                  <div class="flex items-center justify-between mt-10">
                     <label
                       class="block text-sm font-medium leading-6 text-gray-900"
                       for="airCondition"
@@ -249,14 +206,6 @@ const AddRoom = () => {
                 </div>
                 <div class="relative w-[25rem]">
                   <div class="relative w-full min-w-[200px]">
-                    <textarea
-                      rows="8"
-                      class="peer h-full min-h-[100px] w-full !resize-none  rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
-                      placeholder=" "
-                    ></textarea>
-                    <label class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                      Opis Sobe
-                    </label>
                   </div>
                 </div>
               </div>
@@ -322,6 +271,8 @@ const AddRoom = () => {
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
                   </select>
                 </div>
                 <div class="mb-4">
@@ -399,64 +350,7 @@ const AddRoom = () => {
           </form>
         </div>
       </div>
-      <footer className="bg-gray-800 text-white py-8">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 justify-center">
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl font-semibold mb-2">O nama</h3>
-            <p className="text-gray-400 text-center">
-              Hotel Four Seasons predstavlja sinonim za luksuz, udobnost i
-              vrhunsku uslugu. Smješten u srcu najprestižnijih destinacija širom
-              sveta, naša misija je da gostima pružimo nezaboravan boravak uz
-              pažljivo osmišljene sadržaje i besprekornu uslugu.
-            </p>
-          </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl font-semibold mb-2">Kompanija</h3>
-            <ul className="text-gray-400 text-center">
-              <li>
-                <a href="#" className="hover:text-white">
-                  O nama
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Kontaktirajte nas
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Uslovi
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl font-semibold mb-2">Grad</h3>
-            <ul className="text-gray-400 text-center">
-              <li>
-                <a href="#" className="hover:text-white">
-                  Cairo
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Giza
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Luxer
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Aswan
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 };

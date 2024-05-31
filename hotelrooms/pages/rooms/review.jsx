@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import URL from "../constants/constants";
+import URL from "../../constants/constants";
 import "tailwindcss/tailwind.css";
 import { useRouter } from "next/router";
 import React from "react";
 import ReactStars from "react-stars";
+import Header from "@/src/components/layout/header";
+import Footer from "@/src/components/layout/footer";
 
 const ReviewPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -74,60 +76,15 @@ const ReviewPage = () => {
   };
 
   return (
-    <div>
-      <header className="bg-white shadow-md">
-        <div className="container mx-auto flex justify-between items-center py-4">
-          <div className="flex items-center">
-            <img src="fourseasons.jpeg" alt="Logo" className="h-8 mr-2" />
-            <span className="text-2xl font-bold text-gray-800">
-              Four Seasons Hotel
-            </span>
-          </div>
-          <div className="hidden md:flex space-x-4">
-            <a href="#" className="text-gray-600 hover:text-gray-800">
-              Početna
-            </a>
-            <span className="text-gray-600">|</span>
-            <a href="#" className="text-gray-600 hover:text-gray-800">
-              O nama
-            </a>
-            <span className="text-gray-600">|</span>
-            <a href="#" className="text-gray-600 hover:text-gray-800">
-              Kontakt
-            </a>
-          </div>
-          <div className="flex items-center space-x-4">
-            {isLoggedIn ? (
-              <>
-                <span className="text-gray-600 hover:text-gray-800 font-bold">
-                  {userName} ({userType})
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={handleLogin}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  Prijava
-                </button>
-                <button
-                  onClick={handleRegister}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  Registracija
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
+    <div className="flex flex-col min-h-screen">
+          <Header
+          isLoggedIn={isLoggedIn}
+          userName={userName}
+          userType={userType}
+          handleLogout={handleLogout}
+          handleLogin={handleLogin}
+          handleRegister={handleRegister}
+          />
       <div class="max-w-2xl mx-auto mt-10 bg-white p-8 shadow-lg rounded-lg">
         <h1 class="flex justify-center text-3xl font-semibold mb-4">
           Four Seasons Hotel
@@ -143,23 +100,8 @@ const ReviewPage = () => {
           </div>
         </div>
         <div class="mb-4">
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <ReactStars count={5} size={24} color2={"#ffd700"} />
-          </div>
           <div class="mb-4" style={{ display: "flex", alignItems: "center" }}>
-            <label class="block text-gray-700">Soba</label>
-            <div style={{ marginLeft: "auto" }}>
-              <ReactStars count={5} size={24} color2={"#ffd700"} />
-            </div>
-          </div>
-          <div class="mb-4" style={{ display: "flex", alignItems: "center" }}>
-            <label class="block text-gray-700">Usluga</label>
-            <div style={{ marginLeft: "auto" }}>
-              <ReactStars count={5} size={24} color2={"#ffd700"} />
-            </div>
-          </div>
-          <div class="mb-4" style={{ display: "flex", alignItems: "center" }}>
-            <label class="block text-gray-700">Lokacija</label>
+            <label class="block text-gray-700">Ocjena</label>
             <div style={{ marginLeft: "auto" }}>
               <ReactStars count={5} size={24} color2={"#ffd700"} />
             </div>
@@ -172,7 +114,7 @@ const ReviewPage = () => {
                 placeholder=" "
               ></textarea>
               <label class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                Vaš Komentar
+                <span className="font-semibold">Vaš Komentar</span>
               </label>
             </div>
             <div class="flex w-full justify-end py-1.5">
@@ -220,64 +162,7 @@ const ReviewPage = () => {
           </button>
         </div>
       </div>
-      <footer className="bg-gray-800 text-white py-8">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 justify-center">
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl font-semibold mb-2">O nama</h3>
-            <p className="text-gray-400 text-center">
-              Hotel Four Seasons predstavlja sinonim za luksuz, udobnost i
-              vrhunsku uslugu. Smješten u srcu najprestižnijih destinacija širom
-              sveta, naša misija je da gostima pružimo nezaboravan boravak uz
-              pažljivo osmišljene sadržaje i besprekornu uslugu.
-            </p>
-          </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl font-semibold mb-2">Kompanija</h3>
-            <ul className="text-gray-400 text-center">
-              <li>
-                <a href="#" className="hover:text-white">
-                  O nama
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Kontaktirajte nas
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Uslovi
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl font-semibold mb-2">Grad</h3>
-            <ul className="text-gray-400 text-center">
-              <li>
-                <a href="#" className="hover:text-white">
-                  Cairo
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Giza
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Luxer
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Aswan
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 };

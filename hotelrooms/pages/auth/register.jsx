@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link'; // Importing Link from next/link
 import URL from '../../constants/constants';
 import 'tailwindcss/tailwind.css';
 
@@ -11,6 +12,8 @@ export default function RegistrationForm() {
         password: ''
     });
     const router = useRouter();
+    const [notification, setNotification] = useState('');
+    const [notificationType, setNotificationType] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,7 +25,7 @@ export default function RegistrationForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
             const response = await fetch(`${URL}/api/user/register/`, {
                 method: 'POST',
@@ -31,19 +34,33 @@ export default function RegistrationForm() {
                 },
                 body: JSON.stringify(formData)
             });
-
+    
             if (response.ok) {
-                alert('Registration successful!');
-                router.push('/');
+                setNotification('Registracija uspješna!');
+                setNotificationType('success');
+                setTimeout(() => {
+                    router.push('/auth/login');
+                }, 2000); // Redirect to login page after 2 seconds
             } else {
-                alert('Registration failed. Please try again.');
+                setNotification('Registracija nije uspjela. Molimo pokušajte ponovo.');
+                setNotificationType('error');
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again later.');
+            console.error('Greška:', error);
+            setNotification('Došlo je do greške. Molimo pokušajte ponovo kasnije.');
+            setNotificationType('error');
         }
     };
 
+    useEffect(() => {
+        if (notification) {
+            const timer = setTimeout(() => {
+                setNotification('');
+                setNotificationType('');
+            }, notificationType === 'success' ? 2000 : 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [notification, notificationType]);
     return (
         <div className="min-h-screen flex justify-center items-center bg-cover bg-no-repeat" style={{ backgroundImage: "url('/pozadina.png')" }}>
             <div className="flex flex-row justify-center items-start w-full max-w-6xl">
@@ -51,8 +68,8 @@ export default function RegistrationForm() {
                     <div className="p-10 flex items-center ml-[-250px] ">
                         <img src="/b&w.png" alt="Ikona" className="mr-2 w-40 h-40" />
                         <div>
-                            <h1 className="text-6xl font-weight:500 mb-4 text-left border-b-2 border-black py-2 text-black">Four Seasons Hotel</h1>
-                            <p className="text-lg italic mb-8 text-left text-black">"Four Seasons Hotel - Gdje san postaje stvarnost."</p>
+                            <h1 className="text-6xl font-weight:500 mb-4 text-left border-b-2 border-black py-2 text-white">Four Seasons Hotel</h1>
+                            <p className="text-lg italic mb-8 text-left text-white">"Four Seasons Hotel - Gdje san postaje stvarnost."</p>
                         </div>
                     </div>
                     <div className="w-3/4 ml-24 text-left px-6 py-12 ml-[-250px]">
@@ -64,6 +81,11 @@ export default function RegistrationForm() {
                     <div className="bg-white p-8 rounded-3xl shadow-lg w-full max-w-md">
                         <h4 className="text-xl text-left mb-2" style={{ letterSpacing: '0px', fontWeight: 'normal', width: 'fit-content' }}>POČETAK</h4>
                         <p className="text-3xl text-left mb-6" style={{ letterSpacing: '2px', fontWeight: '500', width: 'fit-content' }}>Napravite Profil</p>
+                        {notification && (
+                            <div className={`mb-4 p-4 rounded ${notificationType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                {notification}
+                            </div>
+                        )}
                         <form className="space-y-6" onSubmit={handleSubmit}>
                             <div>
                                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">Ime</label>
@@ -96,7 +118,14 @@ export default function RegistrationForm() {
                             </button>
                         </form>
                         <div className="mt-20 text-center">
-                            <p className="text-sm text-gray-500">Već imate profil? <a href="#" className="font-medium text-black hover:text-black">PRIJAVITE SE OVDJE</a></p>
+                            <p className="text-sm text-gray-500">Već imate profil? <a href="/auth/login" className="font-medium text-black hover:text-black">PRIJAVITE SE OVDJE</a></p>
+                        </div>
+                        <div className="mt-6 text-center">
+                            <Link href="/" legacyBehavior>
+                                <a className="inline-flex items-center justify-center w-full rounded-lg bg-[#d2b48c] p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-[#d2b48c] focus:ring-offset-1 hover:bg-[#c2a384]">
+                                    POSJETI KAO GOST
+                                </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

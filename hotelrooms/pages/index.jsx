@@ -10,9 +10,14 @@ import Header from '@/src/components/layout/header';
 import Footer from '@/src/components/layout/footer';
 import { fetchRoomData } from '@/src/utils/fetch/fetchRoomData';
 import { fetchRoomImages } from '@/src/utils/fetch/fetchRoomImages';
+import { fetchReviewData } from '@/src/utils/fetch/fetchReviewData';
+import { fetchReviewImages } from '@/src/utils/fetch/fetchReviewImages';
 import { fetchUserData } from '@/src/utils/fetch/fetchUserData';
 import Search from '@/src/components/homepage/search';
 import { fetchFilteredRoomData } from '@/src/utils/fetch/fetchFilteredRoomData';
+import Link from 'next/link';
+import GenerateStar from '@/src/components/helper/generatestar';
+import Date from '@/src/components/helper/dateformat';
 
 const customStyles = {
     content: {
@@ -31,10 +36,12 @@ const IndexPage = () => {
     const [userId, setUserId] = useState(null); // State to store user ID
     const [userName, setUserName] = useState('')
     const [roomData, setRoomData] = useState([]);
+    const [reviewData, setReviewData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [modalIsOpen, setIsOpen] = useState(false);
     const [currentImages, setCurrentImages] = useState([]);
     const [tempImages, setTempImages] = useState([]);
+    const [reviewImages, setReviewImages] = useState([]);
     const [roomReviews, setRoomReviews] = useState([]);
     const [filters, setFilters] = useState({ startPrice: 0, endPrice: 0, startCapacity: 0, endCapacity: 0 });
     const [isSearchApplied, setIsSearchApplied] = useState(false);
@@ -89,6 +96,20 @@ const IndexPage = () => {
         getRoomData();
     }, [currentPage, filters, isSearchApplied]);
 
+    useEffect(() => {
+        const getReviewData = async () => {
+            try {
+                const data = await fetchReviewData();
+                setReviewData(Array.isArray(data) ? data : []);
+
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
+        getReviewData();
+    }, [])
+
     const handleLogout = () => {
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
@@ -124,6 +145,19 @@ const IndexPage = () => {
         };
 
         getRoomImages();
+    }, [roomData])
+
+    useEffect( () => {
+        const getReviewImages = async () => {
+            try {
+                const images = await fetchReviewImages();
+                setReviewImages(images);
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
+        getReviewImages();
     }, [roomData])
 
     const toggleReviews = (roomNumber) => {
@@ -170,7 +204,7 @@ const IndexPage = () => {
 <div className="space-y-8">
 {roomData.map(room => {
     const filteredImages = currentImages.filter(image => image.room_id === room.roomNumber);
-
+    const filteredReviewData = reviewData.filter(data => data.room_id === room.roomNumber);
     return (
         <div key={room.roomNumber} className="bg-white rounded-lg shadow-lg p-4 grid grid-rows-1">
             {filteredImages.length > 0 ? (
@@ -195,25 +229,28 @@ const IndexPage = () => {
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
                         </div>
                     </div>
-                    {console.log('aaa', roomReviews[room.roomNumber].state)}
                     </div>
                     {roomReviews[room.roomNumber].state  && (
                     <>
-                    <div>
-                        <div className="mt-4">
-                            <div className="text-lg font-bold">Dobra lokacija i udobno za kratke boravke</div>
-                            <div className="flex items-center space-x-2">
-                                <span className="text-yellow-500">★★★★☆</span>
-                                <span className="text-gray-500 text-sm">04/11/2023</span>
+                    {filteredReviewData.map(oneReviewData => {
+                        const filteredReviewImages = reviewImages.filter(image => image.review_id === oneReviewData.id);
+                        return (
+                        <div key={oneReviewData.id} className="mt-5">
+                            <hr />
+                            <div className="mt-4">
+                                <div className="text-lg font-bold">{oneReviewData.experience}</div>
+                                <div className="flex items-center space-x-2">
+                                    <GenerateStar score={oneReviewData.score}/>
+                                    <Date date={oneReviewData.date}/>
+                                </div>
                             </div>
-                            <div className="text-gray-700 mt-2">
-                                <p>Hotel je bio dobar, a sobe uredne. Lokacija je bila dobra. Lift je bio u funkciji.</p>
-                            </div>
-                        </div>
-                        <div className="flex-shrink-0 w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center">
-                            <span className="text-gray-400">Mjesto za sliku</span>
-                        </div>
-                    </div>
+                                <img className="flex-shrink-0 w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center rounded-lg"
+                                    src={filteredReviewImages[0].original}
+                                    alt="Naziv slike"
+                                    onClick={() => openModal(filteredReviewImages)}
+                                />
+                        </div>)
+                        })}
                     </>
             )}
                 </>

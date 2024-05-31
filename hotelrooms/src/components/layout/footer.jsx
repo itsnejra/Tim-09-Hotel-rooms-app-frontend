@@ -1,7 +1,7 @@
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-800 text-white py-8">
+        <footer className="bg-gray-800 text-white py-8 w-screen mt-auto">
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 justify-center">
                 <div className="flex flex-col items-center">
                     <h3 className="text-xl font-semibold mb-2">O nama</h3>
@@ -17,7 +17,7 @@ const Footer = () => {
                         <li><a href="#" className="hover:text-white">Uslovi</a></li>
                     </ul>
                 </div>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center mb-1">
                     <h3 className="text-xl font-semibold mb-2">Grad</h3>
                     <ul className="text-gray-400 text-center">
                         <li><a href="#" className="hover:text-white">Cairo</a></li>

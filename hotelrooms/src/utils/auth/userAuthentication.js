@@ -18,6 +18,7 @@ export const authenticateUser = async (router, redirectOnFail = true) => {
             userType: userData.userType,
             userId: userData.userId,
             userName: userData.userName,
+            sector: userData.sector
         };
     } catch (error) {
         console.error('Error fetching user data:', error.message);

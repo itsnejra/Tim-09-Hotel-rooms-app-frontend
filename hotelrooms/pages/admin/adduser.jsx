@@ -5,57 +5,29 @@ import "tailwindcss/tailwind.css";
 import { useRouter } from "next/router";
 import Header from "@/src/components/layout/header";
 import Footer from "@/src/components/layout/footer";
+import { authenticateUser } from "@/src/utils/auth/userAuthentication";
 
 const AddUser = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userType, setUserType] = useState(null);
   const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const accessToken = Cookies.get("accessToken");
+      const authenticate = async () => {
+        const authData = await authenticateUser(router, true);
+        setIsLoggedIn(authData.isLoggedIn);
+        setUserId(authData.userId);
+        setUserName(authData.userName);
+        setUserType(authData.userType);
 
-        // Manually decode the JWT token
-        const tokenParts = accessToken.split(".");
-        if (tokenParts.length === 3) {
-          const payload = JSON.parse(atob(tokenParts[1]));
-          const userId = payload.user_id;
-
-          const response = await fetch(`${URL}/api/user/list_user/${userId}/`);
-          if (response.ok) {
-            const userData = await response.json();
-            setUserName(userData[0].name);
-            if (userData[0].is_superuser) {
-              setUserType("Admin");
-            } else if (userData[0].is_staff) {
-              setUserType("Staff");
-            } else if (userData[0].is_authenticated) {
-              setUserType("User");
-            } else {
-              setUserType("unauthenticated user");
-            }
-            setIsLoggedIn(true);
-          } else {
-            setIsLoggedIn(false);
-          }
-        } else {
-          console.error("Invalid JWT token format");
-          setIsLoggedIn(false);
+        if (!authData.isLoggedIn) {
+            return;
         }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setIsLoggedIn(false);
-      }
-    };
-
-    const accessToken = Cookies.get("accessToken");
-    if (accessToken) {
-      fetchUserData();
-    } else {
-      setIsLoggedIn(false);
     }
+
+    authenticate();
   }, []);
 
   const handleLogout = () => {
@@ -63,6 +35,7 @@ const AddUser = () => {
     Cookies.remove("refreshToken");
     setIsLoggedIn(false);
     setUserType(null);
+    router.push('/');
   };
 
   const handleLogin = () => {
@@ -72,6 +45,15 @@ const AddUser = () => {
   const handleRegister = () => {
     router.push("auth/register");
   };
+
+  if (!isLoggedIn) {
+    return null;
+  }
+
+  if(userType !== 'Admin') {
+    router.push('/');
+    return null;
+  }
 
   return (
     <div className="flex flex-col min-h-screen">

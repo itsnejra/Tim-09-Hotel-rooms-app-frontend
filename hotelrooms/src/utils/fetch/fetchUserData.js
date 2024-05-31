@@ -28,6 +28,7 @@ export const fetchUserData = async () => {
             userName: user.name,
             userType: user.is_superuser ? 'Admin' : user.is_staff ? 'Staff' : user.is_authenticated ? 'User' : 'unauthenticated user',
             isLoggedIn: true,
+            sector: user.sector_id,
         };
     } catch (error) {
         console.error('Error fetching user data:', error);

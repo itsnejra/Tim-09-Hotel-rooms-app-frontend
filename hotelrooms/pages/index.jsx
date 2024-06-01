@@ -18,6 +18,7 @@ import { fetchFilteredRoomData } from '@/src/utils/fetch/fetchFilteredRoomData';
 import Link from 'next/link';
 import GenerateStar from '@/src/components/helper/generatestar';
 import Date from '@/src/components/helper/dateformat';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 const customStyles = {
     content: {
@@ -227,8 +228,37 @@ const IndexPage = () => {
                         </div>
                         <div className="flex flex-col items-center justify-center">
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
-                        </div>
-                    </div>
+                            {userType === 'Admin' && (
+    <div className="flex flex-col items-center justify-center">
+        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        <button className="text-gray-500 hover:text-red-600" onClick={() => console.log('Izbriši sobu')}>
+            <img
+                src="https://img.icons8.com/?size=50&id=1942&format=png"
+                alt="Izbriši sobu"
+                className="h-6 w-6"
+            />
+        </button>
+    </div>
+)}
+{isLoggedIn===true&& userType!='Admin'&& userType!='Staff'&&
+<div className="flex flex-col items-center justify-center">
+        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Rezervacija</button>
+        <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
+    </div>
+}
+{userType === 'Staff' && 
+<div className="flex flex-col items-center justify-center">
+        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        <button className="text-gray-500 hover:text-red-600" onClick={() => console.log('Izbriši sobu')}>
+            <img
+                src="https://img.icons8.com/?size=50&id=1942&format=png"
+                alt="Izbriši sobu"
+                className="h-6 w-6"
+            />
+        </button>
+    </div>}
+      </div>
+         </div>
                     </div>
                     {roomReviews[room.roomNumber].state  && (
                     <>
@@ -257,16 +287,45 @@ const IndexPage = () => {
             ) : (
                 <div className="ml-4 w-3/4 grid grid-cols-2 gap-4">
                     <div>
-                        <h3 className="text-xl font-semibold">Room number: {room.roomNumber}</h3>
-                        <p className="text-gray-600">Tip kreveta: {room.bedType}</p>
-                        <p className="text-gray-600">Klima: {room.airCondition ? 'Da' : 'Ne'}</p>
-                        <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
-                        <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
-                        <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg">Recenzije</button>
-                    </div>
-                    <div className="flex flex-col items-center justify-center">
-                        <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
-                    </div>
+                            <h3 className="text-xl font-semibold">Room number: {room.roomNumber}</h3>
+                            <p className="text-gray-600">Tip kreveta: {room.bedType}</p>
+                            <p className="text-gray-600">Klima: {room.airCondition ? 'Da' : 'Ne'}</p>
+                            <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
+                            <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
+                            <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg" onClick={() => toggleReviews(room.roomNumber)}>Recenzije</button>
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
+                            {userType === 'Admin' && (
+    <div className="flex flex-col items-center justify-center">
+        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        <button className="text-gray-500 hover:text-red-600" onClick={() => console.log('Izbriši sobu')}>
+            <img
+                src="https://img.icons8.com/?size=50&id=1942&format=png"
+                alt="Izbriši sobu"
+                className="h-6 w-6"
+            />
+        </button>
+    </div>
+)}
+{isLoggedIn===true&& userType!='Admin'&& userType!='Staff'&&
+<div className="flex flex-col items-center justify-center">
+        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Rezervacija</button>
+        <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
+    </div>
+}
+{userType === 'Staff' && 
+<div className="flex flex-col items-center justify-center">
+        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        <button className="text-gray-500 hover:text-red-600" onClick={() => console.log('Izbriši sobu')}>
+            <img
+                src="https://img.icons8.com/?size=50&id=1942&format=png"
+                alt="Izbriši sobu"
+                className="h-6 w-6"
+            />
+        </button>
+    </div>}
+      </div>
                 </div>
             )}
         </div>
@@ -274,9 +333,17 @@ const IndexPage = () => {
 })}
 </div>
 <div className="flex justify-center mt-8">
-                    <button onClick={prevPage} disabled={currentPage === 1} className="mr-2 px-3 py-1 bg-gray-300 text-black rounded-lg">Previous</button>
-                    <button onClick={nextPage} className="px-3 py-1 bg-gray-300 text-black rounded-lg">Next</button>
+    <button onClick={prevPage} disabled={currentPage === 1} className="mr-2 px-3 py-1 text-black rounded-lg flex items-center space-x-2">
+        <IoIosArrowBack size={24} />
+        <span>Prethodna</span>
+    </button>
+    <button onClick={nextPage} className="px-3 py-1 text-black rounded-lg flex items-center space-x-2">
+        <span>Sljedeća</span>
+        <IoIosArrowForward size={24} />
+    </button>
 </div>
+
+
 </section>
             <section className="bg-gray-100 py-16">
             <div className="container mx-auto text-center">

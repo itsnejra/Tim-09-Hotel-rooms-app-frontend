@@ -226,6 +226,25 @@ const IndexPage = () => {
                             <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
                             <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
                             <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg" onClick={() => toggleReviews(room.roomNumber)}>Recenzije</button>
+                            <br />
+                            {userType==='Admin' &&(
+                            
+                            <div className="ml-0 inline-flex items-center">
+                            <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
+                            </div>
+ ) }
+                              {userType==='Staff' &&(
+                            
+                            <div className="ml-0 inline-flex items-center">
+                            <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
+                            </div>
+ ) }  
+                 {isLoggedIn===true&&userType!='Admin'&& userType!='Staff' &&(
+                            
+                            <div className="ml-0 inline-flex items-center">
+                            <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
+                            </div>
+ ) }            
                         </div>
                         <div className="flex flex-col items-center justify-center">
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
@@ -241,10 +260,10 @@ const IndexPage = () => {
         </button>
     </div>
 )}
+
 {isLoggedIn===true&& userType!='Admin'&& userType!='Staff'&&
 <div className="flex flex-col items-center justify-center">
         <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Rezervacija</button>
-        <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
     </div>
 }
 {userType === 'Staff' && 
@@ -294,7 +313,25 @@ const IndexPage = () => {
                             <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
                             <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
                             <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg" onClick={() => toggleReviews(room.roomNumber)}>Recenzije</button>
-                        </div>
+                        </div><br />
+                            {userType==='Admin' &&(
+                            
+                            <div className="ml-0 inline-flex items-center">
+                            <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
+                            </div>
+ ) }
+                              {userType==='Staff' &&(
+                            
+                            <div className="ml-0 inline-flex items-center">
+                            <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
+                            </div>
+ ) }  
+                 {isLoggedIn===true&&userType!='Admin'&& userType!='Staff' &&(
+                            
+                            <div className="ml-0 inline-flex items-center">
+                            <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
+                            </div>
+ ) }            
                         <div className="flex flex-col items-center justify-center">
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
                             {userType === 'Admin' && (

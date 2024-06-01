@@ -36,14 +36,14 @@ const Header = ({ isLoggedIn, userName, userType, handleLogout, handleLogin, han
                                            Admin Opcije
                                     </button>
                                     {adminDropdownOpen && (
-                                        <ul className=" absolute bg-white text-black shadow-lg rounded"style={{ width: '115px' }}>
-                                            <li>
-                                                <Link href="/rooms/addroom" className="block px-4 py-2 hover:bg-gray-200">
-                                                    <button>Dodaj sobu</button>
-                                                </Link>
+                                        <ul className="absolute bg-white text-black shadow-lg rounded" style={{ width: '115px', zIndex: 10 }}>
+                                            <Link href="/rooms/addroom" className="block px-4 py-2 hover:bg-gray-200">
+                                            <li className='pt-2'>
+                                                    Dodaj sobu
                                             </li>
+                                            </Link>
                                             <li>
-                                                <Link href="/rooms/addroom" className="block px-4 py-2 hover:bg-gray-200">
+                                                <Link href="/admin/adduser" className="block px-4 py-2 hover:bg-gray-200">
                                                 <button>Dodaj zaposlenika</button>
                                                 </Link>
                                             </li>

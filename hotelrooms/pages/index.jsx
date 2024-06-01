@@ -186,7 +186,7 @@ const IndexPage = () => {
     };
 
     return (
-        <div>
+        <div className="overflow-x-hidden">
             <Header
                 isLoggedIn={isLoggedIn}
                 userName={userName}
@@ -286,8 +286,8 @@ const IndexPage = () => {
             )}
                 </>
             ) : (
-                <div className="ml-4 w-3/4 grid grid-cols-2 gap-4">
-                    <div>
+                <div className="ml-4 w-full grid grid-cols-2 gap-4">
+                        <div>
                             <h3 className="text-xl font-semibold">Room number: {room.roomNumber}</h3>
                             <p className="text-gray-600">Tip kreveta: {room.bedType}</p>
                             <p className="text-gray-600">Klima: {room.airCondition ? 'Da' : 'Ne'}</p>

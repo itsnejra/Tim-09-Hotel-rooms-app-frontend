@@ -62,7 +62,7 @@ export default function RegistrationForm() {
         }
     }, [notification, notificationType]);
     return (
-        <div className="min-h-screen flex justify-center items-center bg-cover bg-no-repeat" style={{ backgroundImage: "url('/pozadina.png')" }}>
+        <div className="min-h-screen flex justify-center items-center bg-cover bg-no-repeat overflow-x-hidden" style={{ backgroundImage: "url('/pozadina.png')" }}>
             <div className="flex flex-row justify-center items-start w-full max-w-6xl">
                 <div className="w-1/2 flex flex-col justify-center items-center text-white mr-8">
                     <div className="p-10 flex items-center ml-[-250px] ">

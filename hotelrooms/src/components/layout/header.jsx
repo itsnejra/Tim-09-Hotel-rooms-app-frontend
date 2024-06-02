@@ -27,45 +27,74 @@ const Header = ({ isLoggedIn, userName, userType, handleLogout, handleLogin, han
                 <div className="flex items-center space-x-4">
                     {isLoggedIn ? (
                         <>
-                        {userType === 'Admin' && (
-                                <div className="relative">
-                                    <button
-                                        className="text-gray-600 hover:text-gray-800 font-bold"
-                                        onClick={toggleAdminDropdown}
-                                    >
-                                           Admin Opcije
-                                    </button>
-                                    {adminDropdownOpen && (
-                                        <ul className="absolute bg-white text-black shadow-lg rounded" style={{ width: '115px', zIndex: 10 }}>
-                                            <Link href="/rooms/addroom" className="block px-4 py-2 hover:bg-gray-200">
-                                            <li className='pt-2'>
-                                                    Dodaj sobu
-                                            </li>
-                                            </Link>
-                                            <li>
-                                                <Link href="/admin/adduser" className="block px-4 py-2 hover:bg-gray-200">
-                                                <button>Dodaj zaposlenika</button>
+                            {userType === 'Admin' && (
+                                <>
+                                    <div className="relative">
+                                        <button
+                                            className="text-gray-600 hover:text-gray-800 font-bold"
+                                            onClick={toggleAdminDropdown}
+                                        >
+                                            Admin Opcije
+                                        </button>
+                                        {adminDropdownOpen && (
+                                            <ul className="absolute bg-white text-black shadow-lg rounded" style={{ width: '115px', zIndex: 10 }}>
+                                                <Link href="/rooms/addroom" className="block px-4 py-2 hover:bg-gray-200">
+                                                    <li className='pt-2'>Dodaj sobu</li>
                                                 </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/admin/edit-employee" className="block px-4 py-2 hover:bg-gray-200">
-                                                <button>Lista zaposlenika</button>                                            
+                                                <li>
+                                                    <Link href="/admin/adduser" className="block px-4 py-2 hover:bg-gray-200">
+                                                        <button>Dodaj zaposlenika</button>
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/admin/edit-employee" className="block px-4 py-2 hover:bg-gray-200">
+                                                        <button>Lista zaposlenika</button>
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                <Link href="/rooms/myreservations" className="block px-4 py-2 hover:bg-gray-200 text-center">
+                                                    Pregled rezervacija
                                                 </Link>
-                                            </li>
-                                        </ul>
-                                    )}
-                                </div>
+                                                </li>
+                                            </ul>
+                                        )}
+                                    </div>
+                                </>
                             )}
                             {userType === 'Staff' && (
-                                <div className="relative">
-                                   <Link href="/rooms/addroom" className="block px-4 py-2 hover:bg-gray-200">
-                                                    <button>Dodaj sobu</button>
+                                <>
+                                    <div className="relative">
+                                        <button
+                                            className="text-gray-600 hover:text-gray-800 font-bold"
+                                            onClick={toggleAdminDropdown}
+                                        >
+                                            Staff opcije
+                                        </button>
+                                        {adminDropdownOpen && (
+                                            <ul className="absolute bg-white text-black shadow-lg rounded" style={{ width: '115px', zIndex: 10 }}>
+                                                <li>
+                                                    <Link href="/rooms/addroom" className="block px-4 py-2 hover:bg-gray-200">
+                                                        <button>Dodaj sobu</button>
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                <Link href="/rooms/myreservations" className="block px-4 py-2 hover:bg-gray-200 text-center">
+                                                    Pregled rezervacija
                                                 </Link>
-                                                </div>
-                                    
+                                                </li>
+                                            </ul>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+                            {isLoggedIn === true && userType !== 'Admin' && userType !== 'Staff' && (
+                                <div className="relative">
+                                    <Link href="/rooms/myreservations" className="block px-4 py-2 hover:bg-gray-200">
+                                        <button>Moje rezervacije</button>
+                                    </Link>
+                                </div>
                             )}
                             <span className="text-gray-600 hover:text-gray-800 font-bold">{userName} ({userType})</span>
-                            
                             <button onClick={handleLogout} className="text-gray-600 hover:text-gray-800">Logout</button>
                         </>
                     ) : (

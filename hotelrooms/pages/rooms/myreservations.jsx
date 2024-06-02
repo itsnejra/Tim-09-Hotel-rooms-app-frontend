@@ -94,7 +94,11 @@ const ViewReservations = () => {
           handleRegister={handleRegister}
           />
       <main className="container mx-auto my-8 max-w-4xl">
+      {userType === 'Admin' || userType==='Staff' ? (
+        <h1 className="text-3xl font-bold text-left mb-6">Pregled rezervacija</h1>
+    ) : (
         <h1 className="text-3xl font-bold text-left mb-6">Moje Rezervacije</h1>
+    )}
         <div className="space-y-4">
           <div className="bg-white shadow-md rounded-lg p-4 flex items-center">
             <img
@@ -129,6 +133,17 @@ const ViewReservations = () => {
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
+                  {userType==='Admin'&&
+                <button className="w-20 h-10 flex items-center justify-center bg-red-300 rounded-lg mb-6 px-4 mr-10">
+                  Otkaži
+                </button>
+                }
+                  {userType==='Staff'&&
+                <button className="w-20 h-10 flex items-center justify-center bg-red-300 rounded-lg mb-6 px-4 mr-10">
+                  Otkaži
+                </button>
+                }
+
                 </button>
               </div>
             </div>
@@ -166,7 +181,18 @@ const ViewReservations = () => {
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
+                  {userType==='Admin'&&
+               <button className="w-20 h-10 flex items-center justify-center bg-red-300 rounded-lg mb-6 px-4 mr-10">
+               Otkaži
+             </button>
+                }
+                  {userType==='Staff'&&
+                <button className="w-20 h-10 flex items-center justify-center bg-red-300 rounded-lg mb-6 px-4 mr-10">
+                  Otkaži
+                </button>
+                }
                 </button>{" "}
+                
               </div>
             </div>
           </div>

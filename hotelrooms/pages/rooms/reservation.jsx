@@ -101,7 +101,7 @@ const ReservationPage = () => {
         const token = Cookies.get('accessToken');
 
         try {
-            const response = await fetch(`http://localhost:8000/api/rooms/add_reservation/${roomNumber}/`, {
+            const response = await fetch(`${URL}/api/rooms/add_reservation/${roomNumber}/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -243,8 +243,12 @@ const IndexPage = () => {
 )}
 {isLoggedIn===true&& userType!='Admin'&& userType!='Staff'&&
 <div className="flex flex-col items-center justify-center">
-        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Rezervacija</button>
-        <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
+        <Link href={`/rooms/reservation?roomNumber=${room.roomNumber}`}>
+            <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Rezervacija</button>
+        </Link>
+        <Link href={`/rooms/review?roomNumber=${room.roomNumber}`}>
+            <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
+        </Link>
     </div>
 }
 {userType === 'Staff' && 
@@ -265,6 +269,7 @@ const IndexPage = () => {
                     <>
                     {filteredReviewData.map(oneReviewData => {
                         const filteredReviewImages = reviewImages.filter(image => image.review_id === oneReviewData.id);
+                        console.log(filteredReviewImages)
                         return (
                         <div key={oneReviewData.id} className="mt-5">
                             <hr />
@@ -275,11 +280,13 @@ const IndexPage = () => {
                                     <Date date={oneReviewData.date}/>
                                 </div>
                             </div>
+                            {console.log(filteredReviewImages)}
+                            {filteredReviewImages.length > 0 && (
                                 <img className="flex-shrink-0 w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center rounded-lg"
                                     src={filteredReviewImages[0].original}
                                     alt="Naziv slike"
                                     onClick={() => openModal(filteredReviewImages)}
-                                />
+                            />)}
                         </div>)
                         })}
                     </>

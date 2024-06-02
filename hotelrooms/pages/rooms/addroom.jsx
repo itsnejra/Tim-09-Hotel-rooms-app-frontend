@@ -78,7 +78,7 @@ const AddRoom = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/rooms/create_list/', {
+      const response = await fetch(`${URL}/api/rooms/create_list/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ const AddRoom = () => {
       formData.append('roomNumber', roomNumber);
 
       try {
-        const response = await fetch(`http://localhost:8000/api/rooms/create_list_room_image/${roomNumber}/`, {
+        const response = await fetch(`${URL}/api/rooms/create_list_room_image/${roomNumber}/`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`

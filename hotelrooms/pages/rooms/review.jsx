@@ -8,13 +8,20 @@ import ReactStars from "react-stars";
 import Header from "@/src/components/layout/header";
 import Footer from "@/src/components/layout/footer";
 import { authenticateUser } from "@/src/utils/auth/userAuthentication";
+import ImageUpload from "@/src/components/layout/imageUpload";
+import { use } from "react";
 
 const ReviewPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userType, setUserType] = useState(null);
   const [userName, setUserName] = useState("");
   const [userId, setUserId] = useState(null);
+  const [message, setMessage] = useState({ type: '', text: '' });
+  const [imageFiles, setImageFiles] = useState([]);
+  const [rating, setRating] = useState(0); // Initialize rating state
+  const [comment, setComment] = useState(''); // Initialize comment state
   const router = useRouter();
+  const { roomNumber } = router.query;
 
   useEffect(() => {
      const authenticate = async () => {
@@ -49,6 +56,78 @@ const ReviewPage = () => {
     router.push("auth/register");
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const token = Cookies.get('accessToken');
+
+    const currentDate = new Date().toISOString().split('T')[0];
+    const reviewData = {
+      score: rating,
+      experience: comment,
+      date: currentDate,
+    };
+
+    console.log(reviewData)
+
+    try {
+      const response = await fetch(`${URL}/api/rooms/add_review/${roomNumber}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(reviewData)
+      });
+
+      if (response.ok) {
+        const reviewCreationMessage = 'Recenzija uspješno dodana';
+        const responseData = await response.json();
+        const reviewNumber = responseData.id;
+        if (imageFiles.length > 0) {
+          await handleImageUpload(token, reviewNumber);
+        }
+        setMessage({ type: 'success', text: imageFiles.length > 0 ? `${reviewCreationMessage} i slike uspješno postavljene` : reviewCreationMessage });
+      } else {
+        const errorData = await response.json();
+        console.error('Error creating review:', errorData);
+        setMessage({ type: 'error', text: 'Greška pri dodavanju recenzije' });
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      setMessage({ type: 'error', text: 'Network error' });
+      setTimeout(() => setMessage({ type: '', text: '' }), 5000);
+    } finally {
+      setTimeout(() => setMessage({ type: '', text: '' }), 5000);
+    }
+  };
+
+  const handleImageUpload = async (token, reviewNumber) => {
+    for (const file of imageFiles) {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const response = await fetch(`${URL}/api/rooms/create_list_review_image/${reviewNumber}/`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Error uploading image:', errorData);
+          throw new Error('Error uploading image');
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        throw new Error('Network error');
+      }
+    }
+  };
+
   if (!isLoggedIn) {
     return null;
   }
@@ -68,20 +147,32 @@ const ReviewPage = () => {
           Four Seasons Hotel
         </h1>
         <div class="w-16 h-16 flex items-center mb-4">
-          <img
-            class="w-12 h-12 rounded-full mr-3"
-            src="https://via.placeholder.com/48"
-            alt="Profile Image"
-          />
           <div>
-            <h2 class="text-sm font-semibold">User</h2>
+            <h2 class="text-sm font-semibold">Soba {roomNumber}</h2>
           </div>
         </div>
-        <div class="mb-4">
+        <form class="mb-4" onSubmit={handleSubmit}>
+        {message.text && (
+              <div
+                className={`mb-4 p-4 rounded ${
+                  message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                }`}
+              >
+                {message.text}
+              </div>
+            )}
           <div class="mb-4" style={{ display: "flex", alignItems: "center" }}>
             <label class="block text-gray-700">Ocjena</label>
             <div style={{ marginLeft: "auto" }}>
-              <ReactStars count={5} size={24} color2={"#ffd700"} />
+            <ReactStars
+            count={5}
+            size={24}
+            color2={"#ffd700"}
+            half={false}
+            edit={true}
+            value={rating} // Set the initial value to 2 stars
+            onChange={(newRating) => setRating(newRating)}
+            />
             </div>
           </div>
           <div class="relative w-[38rem]">
@@ -90,6 +181,9 @@ const ReviewPage = () => {
                 rows="8"
                 class="peer h-full min-h-[100px] w-full !resize-none  rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
                 placeholder=" "
+                value={comment} // Bind value of textarea to comment state
+                onChange={(e) => setComment(e.target.value)}
+                name="experience"
               ></textarea>
               <label class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                 <span className="font-semibold">Vaš Komentar</span>
@@ -97,47 +191,15 @@ const ReviewPage = () => {
             </div>
             <div class="flex w-full justify-end py-1.5">
               <div class="flex justify-end space-x-2">
-                <button class="bg-red-500 text-white px-3 py-1 rounded-md">
-                  Otkaži
-                </button>
-                <button class="bg-black text-white px-3 py-1 rounded-md">
+                <button type="submit" class="bg-black text-white px-3 py-1 rounded-md">
                   Potvrdi
                 </button>
               </div>
             </div>
           </div>
-        </div>
+        </form>
         <div class="mt-4">
-          <label class="block text-gray-700">DODAJTE SLIKU</label>
-          <div class="flex items-center justify-center w-full">
-            <label
-              for="dropzone-file"
-              class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-            >
-              <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                <svg
-                  class="h-10 w-10"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                >
-                  <path d="M512 416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96C0 60.7 28.7 32 64 32H192c20.1 0 39.1 9.5 51.2 25.6l19.2 25.6c6 8.1 15.5 12.8 25.6 12.8H448c35.3 0 64 28.7 64 64V416zM232 376c0 13.3 10.7 24 24 24s24-10.7 24-24V312h64c13.3 0 24-10.7 24-24s-10.7-24-24-24H280V200c0-13.3-10.7-24-24-24s-24 10.7-24 24v64H168c-13.3 0-24 10.7-24 24s10.7 24 24 24h64v64z" />
-                </svg>
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                />
-              </div>
-              <input id="dropzone-file" type="file" class="hidden" multiple />
-            </label>
-          </div>
-        </div>
-        <div class="flex justify-end mt-4">
-          <button class="w-full bg-black text-white py-2 rounded-md">
-            OSTAVI RECENZIJU
-          </button>
+         <ImageUpload setImageFiles={setImageFiles}/>
         </div>
       </div>
       <Footer/>

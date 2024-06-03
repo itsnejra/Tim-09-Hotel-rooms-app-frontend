@@ -46,6 +46,7 @@ const IndexPage = () => {
     const [roomReviews, setRoomReviews] = useState([]);
     const [filters, setFilters] = useState({ startPrice: 0, endPrice: 0, startCapacity: 0, endCapacity: 0 });
     const [isSearchApplied, setIsSearchApplied] = useState(false);
+    const [hasMoreData, setHasMoreData] = useState(true)
 
     const openModal = (images) => {
         setTempImages(images);
@@ -83,6 +84,9 @@ const IndexPage = () => {
                     data = await fetchRoomData(currentPage);
                 }
                 setRoomData(data);
+                if(data.length === 0) {
+                    setHasMoreData(false);
+                }
 
                 const reviewsObj = {};
                 data.forEach(room => {
@@ -345,7 +349,7 @@ const IndexPage = () => {
         <IoIosArrowBack size={24} />
         <span>Prethodna</span>
     </button>
-    <button onClick={nextPage} className="px-3 py-1 text-black rounded-lg flex items-center space-x-2">
+    <button onClick={nextPage} disabled={!hasMoreData} className="px-3 py-1 text-black rounded-lg flex items-center space-x-2">
         <span>Sljedeća</span>
         <IoIosArrowForward size={24} />
     </button>

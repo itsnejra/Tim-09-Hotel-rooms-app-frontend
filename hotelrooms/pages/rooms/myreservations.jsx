@@ -9,6 +9,7 @@ import { authenticateUser } from "@/src/utils/auth/userAuthentication";
 import { fetchAllRoomData } from "@/src/utils/fetch/fetchAllRoomData";
 import { format } from "date-fns";
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import Modal from 'react-modal';
 
 const ViewReservations = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,6 +21,8 @@ const ViewReservations = () => {
   const [roomData, setRoomData] = useState([])
   const [status, setStatus] = useState(true)
   const [hasMoreData, setHasMoreData] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reservationToDelete, setReservationToDelete] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -145,6 +148,29 @@ const ViewReservations = () => {
     }
   }
 
+  const handleReservationDelete = async (reservationId) => {
+    try {
+      const response = await fetch(`${URL}/api/rooms/delete_reservation/${reservationId}/`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+
+      if (response.ok) {
+        // Update the reservations state by filtering out the deleted reservation
+        setReservations((prevReservations) =>
+          prevReservations.filter((reservation) => reservation.id !== reservationId)
+        );
+        setIsModalOpen(false);
+      } else {
+        console.error("Failed to delete reservation");
+      }
+    } catch (error) {
+      console.error("Error deleting reservation:", error);
+    }
+  };
+
   const nextPage = () => {
     setCurrentPage(prevPage => prevPage + 1);
   };
@@ -193,7 +219,8 @@ const ViewReservations = () => {
                   </>
                   }
                 </div>
-                <button className="w-10 h-10 flex items-center justify-center">
+                {isLoggedIn && userType!=='Admin' && userType!=='Staff' &&
+                <button onClick={() => { setReservationToDelete(reservation.id); setIsModalOpen(true); }}className="w-10 h-10 flex items-center justify-center">
                   <svg
                     className="w-8 h-8 text-red-600"
                     fill="none"
@@ -208,6 +235,7 @@ const ViewReservations = () => {
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
+                  </button>}
                   {userType==='Admin'&&
                 <button onClick={() => handleStatusChange(reservation.id)} className="w-20 h-10 flex items-center justify-center bg-red-300 rounded-lg mb-6 px-4 mr-10">
                   Otkaži
@@ -218,8 +246,6 @@ const ViewReservations = () => {
                   Otkaži
                 </button>
                 }
-
-                </button>
               </div>
             </div>
           </div>)})}
@@ -236,6 +262,18 @@ const ViewReservations = () => {
         </div>
       </main>
      <Footer/>
+     {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-black opacity-50 absolute inset-0"></div>
+          <div className="bg-white rounded-lg p-6 relative z-10">
+            <h2 className="text-lg font-bold mb-4">Jeste li sigurni da želite obrisati rezervaciju?</h2>
+            <div className="flex justify-end">
+              <button onClick={() => setIsModalOpen(false)} className="mr-2 px-4 py-2 bg-gray-300 rounded-lg">Otkaži</button>
+              <button onClick={() => handleReservationDelete(reservationToDelete)} className="px-4 py-2 bg-red-600 text-white rounded-lg">Potvrdi</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

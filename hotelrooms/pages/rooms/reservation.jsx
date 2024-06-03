@@ -7,6 +7,7 @@ import Footer from '@/src/components/layout/footer';
 import { fetchRoomDataForRoom } from '@/src/utils/fetch/fetchRoomDataOneRoom';
 import { fetchRoomImagesForRoom } from '@/src/utils/fetch/fetchRoomImagesOneRoom';
 import { authenticateUser } from '@/src/utils/auth/userAuthentication';
+import URL from '@/constants/constants';
 
 const ReservationPage = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -96,10 +97,10 @@ const ReservationPage = () => {
             endDate,
             pansion: selectedPansion,
             user_id: userId,
+            status: 1,
         };
 
         const token = Cookies.get('accessToken');
-
         try {
             const response = await fetch(`${URL}/api/rooms/add_reservation/${roomNumber}/`, {
                 method: 'POST',

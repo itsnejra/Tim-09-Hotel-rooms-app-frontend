@@ -47,7 +47,7 @@ const Header = ({ isLoggedIn, userName, userType, handleLogout, handleLogin, han
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link href="/admin/edit-employee" className="block px-4 py-2 hover:bg-gray-200">
+                                                    <Link href="/admin/listusers" className="block px-4 py-2 hover:bg-gray-200">
                                                         <button>Lista zaposlenika</button>
                                                     </Link>
                                                 </li>

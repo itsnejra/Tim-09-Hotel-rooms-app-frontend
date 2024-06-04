@@ -253,6 +253,8 @@ const ViewReservations = () => {
               </div>
             </div>
           </div>)})}
+          {reservations.length===0 &&
+           <div className="font-bold text-gray-500 text-xl">Na ovoj stranici nema rezervacija</div>}
           <div className="flex justify-center mt-24">
             <button onClick={prevPage} disabled={currentPage === 1} className="mr-2 px-3 py-1 text-black rounded-lg flex items-center space-x-2">
                 <IoIosArrowBack size={24} />

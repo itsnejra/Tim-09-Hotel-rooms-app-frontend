@@ -72,7 +72,7 @@ const ContactUs = () => {
           <div className="absolute inset-0">
             <img
               className="w-full h-full object-cover opacity-50"
-              src="contact.jpeg"
+              src="/contact.jpeg"
               alt="Background Image"
             />
           </div>

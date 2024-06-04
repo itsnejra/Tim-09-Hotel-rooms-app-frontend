@@ -233,6 +233,7 @@ const IndexPage = () => {
     <section className="container mx-auto py-16">
     <h2 className="text-3xl font-bold text-center mb-8">Istaknute Sobe u hotelu Four Seasons</h2>
 <div className="space-y-8">
+{roomData.length===0 && <p className="font-bold text-gray-500 text-xl">Na ovoj stranici nema soba</p>}
 {roomData.map(room => {
     const filteredImages = currentImages.filter(image => image.room_id === room.roomNumber);
     const filteredReviewData = reviewData.filter(data => data.room_id === room.roomNumber);
@@ -255,7 +256,8 @@ const IndexPage = () => {
                             <p className="text-gray-600">Klima: {room.airCondition ? 'Da' : 'Ne'}</p>
                             <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
                             <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
-                            <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg" onClick={() => toggleReviews(room.roomNumber)}>Recenzije</button>
+                            {filteredReviewData.length!==0 &&
+                            <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg" onClick={() => toggleReviews(room.roomNumber)}>Recenzije</button>}
                         </div>
                         <div className="flex flex-col items-center justify-center">
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
@@ -328,7 +330,8 @@ const IndexPage = () => {
                             <p className="text-gray-600">Klima: {room.airCondition ? 'Da' : 'Ne'}</p>
                             <p className="text-gray-600">WiFi: {room.wifi ? 'Da' : 'Ne'}</p>
                             <p className="text-gray-600">TV: {room.tv ? 'Da' : 'Ne'}</p>
-                            <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg" onClick={() => toggleReviews(room.roomNumber)}>Recenzije</button>
+                            {filteredReviewData.length !== 0 &&
+                            <button className="bg-gray-300 text-black px-3 py-1 mb-2 rounded-lg" onClick={() => toggleReviews(room.roomNumber)}>Recenzije</button>}
                         </div>
                         <div className="flex flex-col items-center justify-center">
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>

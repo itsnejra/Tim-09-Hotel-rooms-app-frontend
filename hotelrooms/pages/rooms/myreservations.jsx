@@ -23,6 +23,7 @@ const ViewReservations = () => {
   const [hasMoreData, setHasMoreData] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reservationToDelete, setReservationToDelete] = useState(null);
+  const [sectorId, setSectorId] = useState();
   const router = useRouter();
 
   useEffect(() => {
@@ -32,6 +33,7 @@ const ViewReservations = () => {
         setUserId(authData.userId);
         setUserName(authData.userName);
         setUserType(authData.userType);
+        setSectorId(authData.sector);
 
         if (!authData.isLoggedIn) {
             return;
@@ -176,6 +178,7 @@ const ViewReservations = () => {
   };
 
   const prevPage = () => {
+    setHasMoreData(true);
     setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
   };
 
@@ -241,7 +244,8 @@ const ViewReservations = () => {
                   Otkaži
                 </button>
                 }
-                  {userType==='Staff'&&
+                {console.log(roomDataForReservation[0].sector_id)}
+                  {userType==='Staff'&& roomDataForReservation[0].sector_id===sectorId &&
                 <button onClick={() => handleStatusChange(reservation.id)} className="w-20 h-10 flex items-center justify-center bg-red-300 rounded-lg mb-6 px-4 mr-10">
                   Otkaži
                 </button>

@@ -84,7 +84,7 @@ const ReservationPage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (startDate > endDate) {
-            setErrorMessage('Rezervacija neuspješna');
+            setErrorMessage('Startni datum ne može biti veći od početnog.');
 
             setTimeout(() => {
                 setErrorMessage('');

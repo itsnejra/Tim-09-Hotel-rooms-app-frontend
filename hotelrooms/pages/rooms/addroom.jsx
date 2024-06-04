@@ -15,6 +15,7 @@ const AddRoom = () => {
   const [userId, setUserId] = useState(null);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [imageFiles, setImageFiles] = useState([]);
+  const [sectorId, setSectorId] = useState();
   const router = useRouter();
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const AddRoom = () => {
         setUserId(authData.userId);
         setUserName(authData.userName);
         setUserType(authData.userType);
+        setSectorId(authData.sector);
 
         if (!authData.isLoggedIn) {
             return;
@@ -307,8 +309,18 @@ const AddRoom = () => {
                     id="sector"
                     name="sector"
                   >
+                    {userType==='Staff' && sectorId===1 &&
                     <option value="1">Sektor 1</option>
+                    }
+                    {userType==='Staff' && sectorId===2 &&
                     <option value="2">Sektor 2</option>
+                    }
+                    {userType!=='Staff' &&
+                      <>
+                      <option value="1">Sektor 1</option>
+                      <option value="2">Sektor 2</option>
+                      </>
+                    }
                   </select>
                 </div>
                 <div className="mb-4">

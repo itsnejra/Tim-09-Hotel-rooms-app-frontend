@@ -91,7 +91,8 @@ const ReviewPage = () => {
       } else {
         const errorData = await response.json();
         console.error('Error creating review:', errorData);
-        setMessage({ type: 'error', text: 'Greška pri dodavanju recenzije' });
+        console.log('Error data', errorData)
+        setMessage({ type: 'error', text: `${errorData['error']}` });
       }
     } catch (error) {
       console.error('Network error:', error);

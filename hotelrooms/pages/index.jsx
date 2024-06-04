@@ -46,7 +46,10 @@ const IndexPage = () => {
     const [roomReviews, setRoomReviews] = useState([]);
     const [filters, setFilters] = useState({ startPrice: 0, endPrice: 0, startCapacity: 0, endCapacity: 0 });
     const [isSearchApplied, setIsSearchApplied] = useState(false);
-    const [hasMoreData, setHasMoreData] = useState(true)
+    const [hasMoreData, setHasMoreData] = useState(true);
+    const [sectorId, setSectorId] = useState();
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [roomToDelete, setRoomToDelete] = useState();
 
     const openModal = (images) => {
         setTempImages(images);
@@ -59,6 +62,27 @@ const IndexPage = () => {
     
     const router = useRouter()
 
+    const accessToken = Cookies.get('accessToken');
+
+    const handleRoomDelete = async (roomId) => {
+        try {
+          const response = await fetch(`${URL}/api/rooms/edit/${roomId}/`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`
+            }
+          });
+    
+          if (response.ok) {
+            setIsDeleteModalOpen(false);
+          } else {
+            console.error("Failed to delete room");
+          }
+        } catch (error) {
+          console.error("Error deleting room:", error);
+        }
+      };
+
     useEffect(() => {
         const getUserData = async () => {
             const userData = await fetchUserData();
@@ -66,6 +90,7 @@ const IndexPage = () => {
             setUserName(userData.userName);
             setUserType(userData.userType);
             setIsLoggedIn(userData.isLoggedIn);
+            setSectorId(userData.sector);
         };
 
         const accessToken = Cookies.get('accessToken');
@@ -99,7 +124,7 @@ const IndexPage = () => {
         };
 
         getRoomData();
-    }, [currentPage, filters, isSearchApplied]);
+    }, [currentPage, filters, isSearchApplied, isDeleteModalOpen]);
 
     useEffect(() => {
         const getReviewData = async () => {
@@ -135,6 +160,7 @@ const IndexPage = () => {
     };
 
     const prevPage = () => {
+        setHasMoreData(true);
         setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
     };
 
@@ -236,7 +262,7 @@ const IndexPage = () => {
                             {userType === 'Admin' && (
     <div className="flex flex-col items-center justify-center">
         <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
-        <button className="text-gray-500 hover:text-red-600" onClick={() => console.log('Izbriši sobu')}>
+        <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
                 alt="Izbriši sobu"
@@ -255,10 +281,10 @@ const IndexPage = () => {
         </Link>
     </div>
 }
-{userType === 'Staff' && 
+{userType === 'Staff' && sectorId===room.sector_id &&
 <div className="flex flex-col items-center justify-center">
         <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
-        <button className="text-gray-500 hover:text-red-600" onClick={() => console.log('Izbriši sobu')}>
+        <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
                 alt="Izbriši sobu"
@@ -273,7 +299,6 @@ const IndexPage = () => {
                     <>
                     {filteredReviewData.map(oneReviewData => {
                         const filteredReviewImages = reviewImages.filter(image => image.review_id === oneReviewData.id);
-                        console.log(filteredReviewImages)
                         return (
                         <div key={oneReviewData.id} className="mt-5">
                             <hr />
@@ -284,7 +309,6 @@ const IndexPage = () => {
                                     <Date date={oneReviewData.date}/>
                                 </div>
                             </div>
-                            {console.log(filteredReviewImages)}
                             {filteredReviewImages.length > 0 && (
                                 <img className="flex-shrink-0 w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center rounded-lg"
                                     src={filteredReviewImages[0].original}
@@ -311,7 +335,7 @@ const IndexPage = () => {
                             {userType === 'Admin' && (
     <div className="flex flex-col items-center justify-center">
         <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
-        <button className="text-gray-500 hover:text-red-600" onClick={() => console.log('Izbriši sobu')}>
+        <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
                 alt="Izbriši sobu"
@@ -326,10 +350,10 @@ const IndexPage = () => {
         <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
     </div>
 }
-{userType === 'Staff' && 
+{userType === 'Staff' && sectorId===room.sector_id &&
 <div className="flex flex-col items-center justify-center">
         <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
-        <button className="text-gray-500 hover:text-red-600" onClick={() => console.log('Izbriši sobu')}>
+        <button className="text-gray-500 hover:text-red-600"onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
                 alt="Izbriši sobu"
@@ -404,6 +428,18 @@ const IndexPage = () => {
             <button onClick={closeModal} className="absolute top-2 right-2 text-white bg-red-600 rounded-full p-1">X</button>
             <ImageGallery items={tempImages} />
         </Modal>
+        {isDeleteModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-black opacity-50 absolute inset-0"></div>
+          <div className="bg-white rounded-lg p-6 relative z-10">
+            <h2 className="text-lg font-bold mb-4">Jeste li sigurni da želite obrisati sobu?</h2>
+            <div className="flex justify-end">
+              <button onClick={() => setIsDeleteModalOpen(false)} className="mr-2 px-4 py-2 bg-gray-300 rounded-lg">Otkaži</button>
+              <button onClick={() => handleRoomDelete(roomToDelete)} className="px-4 py-2 bg-red-600 text-white rounded-lg">Potvrdi</button>
+            </div>
+          </div>
+        </div>
+      )}
  </div>
     );
 };

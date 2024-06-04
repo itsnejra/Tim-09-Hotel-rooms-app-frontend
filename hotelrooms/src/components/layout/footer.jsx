@@ -6,7 +6,7 @@ const Footer = () => {
                 <div className="flex flex-col items-center">
                     <h3 className="text-xl font-semibold mb-2">O nama</h3>
                     <p className="text-gray-400 text-center">
-                        Hotel Four Seasons predstavlja sinonim za luksuz, udobnost i vrhunsku uslugu. Smješten u srcu najprestižnijih destinacija širom sveta, naša misija je da gostima pružimo nezaboravan boravak uz pažljivo osmišljene sadržaje i besprekornu uslugu.
+                        Apartman Four Seasons predstavlja sinonim za luksuz, udobnost i vrhunsku uslugu. Smješten u srcu najprestižnijih destinacija širom sveta, naša misija je da gostima pružimo nezaboravan boravak uz pažljivo osmišljene sadržaje i besprekornu uslugu.
                     </p>
                 </div>
                 <div className="flex flex-col items-center">

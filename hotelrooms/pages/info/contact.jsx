@@ -83,7 +83,7 @@ const ContactUs = () => {
               </h1>
               <p className="mt-6 text-lg text-gray-300">
                 Naš tim se zalaže za pružanje vrhunske usluge kako bi zadovoljio
-                vaše potrebe i osigurao nezaboravan boravak u našem hotelu.
+                vaše potrebe i osigurao nezaboravan boravak u našem apartmanu.
                 Kontaktirajte nas za sva vaša pitanja i zahtjeve.
               </p>
             </div>
@@ -104,7 +104,7 @@ const ContactUs = () => {
                 className="text-indigo-600 hover:text-gray-800 mt-2 inline-block"
               >
                 <MdEmail className="inline-block mr-2" />
-                hotelfourseasons@support.com
+                apartmentfourseasons@support.com
               </a>
             </div>
             <div>

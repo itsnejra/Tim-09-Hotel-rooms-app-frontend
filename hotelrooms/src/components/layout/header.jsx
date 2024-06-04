@@ -15,7 +15,7 @@ const Header = ({ isLoggedIn, userName, userType, handleLogout, handleLogin, han
             <div className="container mx-auto flex justify-between items-center py-4">
                 <div className="flex items-center">
                     <img src="/fourseasons.jpeg" alt="Logo" className="h-8 mr-2" />
-                    <span className="text-2xl font-bold text-gray-800">Four Seasons Hotel</span>
+                    <span className="text-2xl font-bold text-gray-800">Four Seasons Apartman</span>
                 </div>
                 <div className="hidden md:flex space-x-4">
                     <Link href="/" className="text-gray-600 hover:text-gray-800">Početna</Link>

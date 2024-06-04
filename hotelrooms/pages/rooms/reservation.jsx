@@ -176,7 +176,7 @@ const ReservationPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <div className="flex flex-col space-y-2">
-                            <h2 className="text-2xl font-light">Soba {roomNumber} - Four Seasons Hotel</h2>
+                            <h2 className="text-2xl font-light">Soba {roomNumber} - Four Seasons Apartman</h2>
                             <img src={currentImages[0]?.original} className="w-full h-auto" alt="Slika Sobe" />
                         </div>
                     </div>

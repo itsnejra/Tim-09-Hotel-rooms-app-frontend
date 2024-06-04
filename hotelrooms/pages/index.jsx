@@ -231,7 +231,7 @@ const IndexPage = () => {
             />
 
     <section className="container mx-auto py-16">
-    <h2 className="text-3xl font-bold text-center mb-8">Istaknute Sobe u hotelu Four Seasons</h2>
+    <h2 className="text-3xl font-bold text-center mb-8">Istaknute Sobe u apartmanu Four Seasons</h2>
 <div className="space-y-8">
 {roomData.length===0 && <p className="font-bold text-gray-500 text-xl">Na ovoj stranici nema soba</p>}
 {roomData.map(room => {
@@ -263,7 +263,7 @@ const IndexPage = () => {
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
                             {userType === 'Admin' && (
     <div className="flex flex-col items-center justify-center">
-        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
         <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -285,7 +285,7 @@ const IndexPage = () => {
 }
 {userType === 'Staff' && sectorId===room.sector_id &&
 <div className="flex flex-col items-center justify-center">
-        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
         <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -337,7 +337,7 @@ const IndexPage = () => {
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
                             {userType === 'Admin' && (
     <div className="flex flex-col items-center justify-center">
-        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
         <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -355,7 +355,7 @@ const IndexPage = () => {
 }
 {userType === 'Staff' && sectorId===room.sector_id &&
 <div className="flex flex-col items-center justify-center">
-        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
         <button className="text-gray-500 hover:text-red-600"onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -390,11 +390,11 @@ const IndexPage = () => {
     <div className="grid grid-cols-3 gap-8">
         <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
             <h3 className="text-xl font-semibold mb-2">Besplatan WIFI</h3>
-            <p className="text-gray-600">Naš Four Seasons Hotel nudi besplatan WiFi za sve goste. Bez obzira jeste li u sobi, restoranu ili na bazenu, možete ostati povezani s vašim najdražima i poslovnim partnerima.</p>
+            <p className="text-gray-600">Naš Four Seasons Apartman nudi besplatan WiFi za sve goste. Bez obzira jeste li u sobi, restoranu ili na bazenu, možete ostati povezani s vašim najdražima i poslovnim partnerima.</p>
         </div>
         <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
             <h3 className="text-xl font-semibold mb-2">Brza rezervacija</h3>
-            <p className="text-gray-600">Uživajte u jednostavnom procesu rezervacije. Naš tim za pomoć stoji vam na raspolaganju kako biste brzo i lako rezervirali svoj boravak u našem hotelu.</p>
+            <p className="text-gray-600">Uživajte u jednostavnom procesu rezervacije. Naš tim za pomoć stoji vam na raspolaganju kako biste brzo i lako rezervirali svoj boravak u našem apartmanu.</p>
         </div>
         <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
             <h3 className="text-xl font-semibold mb-2">Restorani</h3>
@@ -402,7 +402,7 @@ const IndexPage = () => {
         </div>
         <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
             <h3 className="text-xl font-semibold mb-2">Bazeni za plivanje</h3>
-            <p className="text-gray-600">Otvoreni i zatvoreni bazeni s grijanom morskom vodom pružaju vam mogućnost opuštanja i rekreacije. Na krovu hotela nalazi se Premium Infinity bazen s panoramskim pogledom na more</p>
+            <p className="text-gray-600">Otvoreni i zatvoreni bazeni s grijanom morskom vodom pružaju vam mogućnost opuštanja i rekreacije. Na apartmana nalazi se Premium Infinity bazen s panoramskim pogledom na more</p>
         </div>
         <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
             <h3 className="text-xl font-semibold mb-2">Ljepota &amp; zdravlje</h3>

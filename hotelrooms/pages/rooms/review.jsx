@@ -145,7 +145,7 @@ const ReviewPage = () => {
           />
       <div class="max-w-2xl mx-auto mt-10 bg-white p-8 shadow-lg rounded-lg">
         <h1 class="flex justify-center text-3xl font-semibold mb-4">
-          Four Seasons Hotel
+          Four Seasons Apartman
         </h1>
         <div class="w-16 h-16 flex items-center mb-4">
           <div>

@@ -75,8 +75,8 @@ export default function LoginPage() {
                     <div className="p-10 flex items-center ml-[-250px]">
                         <img src="/b&w.png" alt="Ikona" className="mr-2 w-40 h-40" />
                         <div>
-                            <h1 className="text-6xl font-weight:500 mb-4 text-left border-b-2 border-black py-2 text-white">Four Seasons Hotel</h1>
-                            <p className="text-lg italic mb-8 text-left text-white">"Four Seasons Hotel - Gdje san postaje stvarnost."</p>
+                            <h1 className="text-6xl font-weight:500 mb-4 text-left border-b-2 border-black py-2 text-white">Four Seasons Apartman</h1>
+                            <p className="text-lg italic mb-8 text-left text-white">"Four Seasons Apartman - Gdje san postaje stvarnost."</p>
                         </div>
                     </div>
                     <div className="w-3/4 ml-24 text-left px-6 py-12 ml-[-250px]">

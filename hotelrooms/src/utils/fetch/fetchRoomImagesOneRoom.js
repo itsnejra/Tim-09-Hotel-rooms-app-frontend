@@ -6,12 +6,22 @@ export const fetchRoomImagesForRoom = async (roomNumber) => {
         if (response.ok) {
             const imagesUrls = await response.json();
             return imagesUrls.map((imageUrl) => {
-                const parts = imageUrl.image.split('/api/');
-                const newPath = parts[1].replace(`rooms/create_list_room_image/${roomNumber}/`, '');
-                const newUrl = parts[0] + '/' + newPath;
-                return {
-                    original: newUrl,
-                };
+                if (imageUrl.image.includes('api')) {
+                    const parts = imageUrl.image.split('/api/');
+                    const newPath = parts[1].replace('rooms/list_room_images/', '');
+                    const newUrl = parts[0] + '/' + newPath;
+                    return {
+                        original: newUrl,
+                        thumbnail: newUrl,
+                        room_id: imageUrl.room,
+                    };
+                } else {
+                    return {
+                        original: imageUrl.image,
+                        thumbnail: imageUrl.image,
+                        room_id: imageUrl.room,
+                    };
+                }
             });
         } else {
             throw new Error('Failed to fetch room images for room ' + roomNumber);

@@ -20,7 +20,7 @@ const Header = ({ isLoggedIn, userName, userType, handleLogout, handleLogin, han
                 <div className="hidden md:flex space-x-4">
                     <Link href="/" className="text-gray-600 hover:text-gray-800">Početna</Link>
                     <span className="text-gray-600">|</span>
-                    <a href="#" className="text-gray-600 hover:text-gray-800">O nama</a>
+                    <Link href="/info/aboutus" className="text-gray-600 hover:text-gray-800">O nama</Link>
                     <span className="text-gray-600">|</span>
                     <Link href="/info/contact" className="text-gray-600 hover:text-gray-800">Kontakt</Link>
                 </div>

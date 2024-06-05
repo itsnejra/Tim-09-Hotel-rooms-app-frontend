@@ -526,7 +526,7 @@ const EditRoom = () => {
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-black opacity-50 absolute inset-0"></div>
           <div className="bg-white rounded-lg p-6 relative z-10">
-            <h2 className="text-lg font-bold mb-4">Jeste li sigurni da želite obrisati sobu?</h2>
+            <h2 className="text-lg font-bold mb-4">Jeste li sigurni da želite obrisati sliku?</h2>
             <div className="flex justify-end">
               <button onClick={() => setIsDeleteModalOpen(false)} className="mr-2 px-4 py-2 bg-gray-300 rounded-lg">Otkaži</button>
               <button onClick={() => handleImageDelete(imageToDelete)} className="px-4 py-2 bg-red-600 text-white rounded-lg">Potvrdi</button>

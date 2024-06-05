@@ -97,7 +97,6 @@ const EmployeePage = () => {
 
   const handleStaffDelete = async (id) => {
     try {
-      console.log(`${URL}/api/user/edit/${id}/`)
       const response = await fetch(`${URL}/api/user/edit/${id}/`, {
         method: 'DELETE',
         headers: {
@@ -105,7 +104,6 @@ const EmployeePage = () => {
         }
       });
 
-      console.log(response)
 
       if (response.ok) {
         // Update the reservations state by filtering out the deleted reservation

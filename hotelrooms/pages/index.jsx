@@ -263,7 +263,9 @@ const IndexPage = () => {
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
                             {userType === 'Admin' && (
     <div className="flex flex-col items-center justify-center">
-        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
+        <Link href={`/rooms/editroom?roomNumber=${room.roomNumber}`}>
+            <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        </Link>
         <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -285,7 +287,9 @@ const IndexPage = () => {
 }
 {userType === 'Staff' && sectorId===room.sector_id &&
 <div className="flex flex-col items-center justify-center">
-        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
+        <Link href={`/rooms/editroom?roomNumber=${room.roomNumber}`}>
+            <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        </Link>
         <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -337,7 +341,9 @@ const IndexPage = () => {
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
                             {userType === 'Admin' && (
     <div className="flex flex-col items-center justify-center">
-        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
+        <Link href={`/rooms/editroom?roomNumber=${room.roomNumber}`}>
+            <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        </Link>
         <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -357,7 +363,9 @@ const IndexPage = () => {
 }
 {userType === 'Staff' && sectorId===room.sector_id &&
 <div className="flex flex-col items-center justify-center">
-        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
+        <Link href={`/rooms/editroom?roomNumber=${room.roomNumber}`}>
+            <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        </Link>
         <button className="text-gray-500 hover:text-red-600"onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"

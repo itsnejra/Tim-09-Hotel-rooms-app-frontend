@@ -8,8 +8,13 @@ export const fetchRoomImagesForRoom = async (roomNumber) => {
             return imagesUrls.map((imageUrl) => {
                 if (imageUrl.image.includes('api')) {
                     const parts = imageUrl.image.split('/api/');
-                    const newPath = parts[1].replace('rooms/list_room_images/', '');
-                    const newUrl = parts[0] + '/' + newPath;
+                    let newPath = parts[1].replace('rooms/create_list_room_image/', '');
+                    console.log(newPath.length, 'bbb')
+                    if(newPath.length==28)
+                        newPath = newPath.slice(2);
+                    else
+                        newPath = newPath.slice(3);
+                    const newUrl = parts[0]+'/'+newPath
                     return {
                         original: newUrl,
                         thumbnail: newUrl,

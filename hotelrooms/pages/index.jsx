@@ -263,7 +263,7 @@ const IndexPage = () => {
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
                             {userType === 'Admin' && (
     <div className="flex flex-col items-center justify-center">
-        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
         <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -285,7 +285,7 @@ const IndexPage = () => {
 }
 {userType === 'Staff' && sectorId===room.sector_id &&
 <div className="flex flex-col items-center justify-center">
-        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
         <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -337,7 +337,7 @@ const IndexPage = () => {
                             <p className="text-2xl font-bold mb-4">BAM {room.price}</p>
                             {userType === 'Admin' && (
     <div className="flex flex-col items-center justify-center">
-        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
         <button className="text-gray-500 hover:text-red-600" onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -349,13 +349,15 @@ const IndexPage = () => {
 )}
 {isLoggedIn===true&& userType!='Admin'&& userType!='Staff'&&
 <div className="flex flex-col items-center justify-center">
-        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Rezervacija</button>
+        <Link href={`/rooms/reservation?roomNumber=${room.roomNumber}`}>
+            <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Rezervacija</button>
+        </Link>
         <button className="text-gray-500 hover:text-red-600">Dodaj recenziju</button>
     </div>
 }
 {userType === 'Staff' && sectorId===room.sector_id &&
 <div className="flex flex-col items-center justify-center">
-        <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button>
+        {/* <button className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi sobu</button> */}
         <button className="text-gray-500 hover:text-red-600"onClick={() => {setRoomToDelete(room.roomNumber); setIsDeleteModalOpen(true);}}>
             <img
                 src="https://img.icons8.com/?size=50&id=1942&format=png"
@@ -402,7 +404,7 @@ const IndexPage = () => {
         </div>
         <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
             <h3 className="text-xl font-semibold mb-2">Bazeni za plivanje</h3>
-            <p className="text-gray-600">Otvoreni i zatvoreni bazeni s grijanom morskom vodom pružaju vam mogućnost opuštanja i rekreacije. Na krovu hotela nalazi se Premium Infinity bazen s panoramskim pogledom na more</p>
+            <p className="text-gray-600">Otvoreni i zatvoreni bazeni s grijanom morskom vodom pružaju vam mogućnost opuštanja i rekreacije.Na hotelu nalazi se Premium Infinity bazen s panoramskim pogledom na more</p>
         </div>
         <div className="p-4 bg-white rounded-lg shadow-md border-2 border-orange-500">
             <h3 className="text-xl font-semibold mb-2">Ljepota &amp; zdravlje</h3>

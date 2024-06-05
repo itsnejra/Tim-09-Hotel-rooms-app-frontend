@@ -148,7 +148,7 @@ const EmployeePage = () => {
                 <th className="p-4">Ime i Prezime</th>
                 <th className="p-4">Email</th>
                 <th className="p-4">Sektor</th>
-                <th className="p-4">Upravljaj</th>
+                <th className="p-4 pl-11">Upravljaj</th>
               </tr>
             </thead>
             }
@@ -161,8 +161,10 @@ const EmployeePage = () => {
                   </div>
                 </td>
                 <td className="p-4">{staff.email}</td>
-                <td className="p-4">{staff.sector_id}</td>
+                <td className="p-4 pl-9">{staff.sector_id}</td>
                 <td className="p-4 flex space-x-2">
+                <Link href={`/admin/edituser?staffId=${staff.id}`}
+                className="bg-orange-300 text-black px-3 py-1 mb-2 rounded-lg">Uredi</Link>
                   <button className="w-20 h-10 flex items-center justify-center"
                   onClick={() => {setStaffToDelete(staff.id); setIsModalOpen(true);}}>
                     <svg
